@@ -1,0 +1,12 @@
+# Ignore the Data folder
+Data/
+Dataaa
+
+# Ignore the examp folder
+examp/
+
+# Ignore the virtual environment
+venv/
+
+# All pdf files
+*.pdf
