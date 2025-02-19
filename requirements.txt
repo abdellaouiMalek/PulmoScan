@@ -5,3 +5,5 @@ jupyter
 matplotlib>=3.9
 ipympl
 ipywidgets
+scipy
+seaborn
