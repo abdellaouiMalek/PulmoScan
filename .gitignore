@@ -9,3 +9,5 @@ venv/
 
 # All pdf files
 *.pdf
+
+NIH_Chest_Data/
