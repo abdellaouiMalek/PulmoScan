@@ -2,8 +2,10 @@ numpy
 pandas
 SimpleITK
 jupyter
-matplotlib>=3.9
+matplotlib
 ipympl
 ipywidgets
 scipy
 seaborn
+scikit-learn
+opencv-python
