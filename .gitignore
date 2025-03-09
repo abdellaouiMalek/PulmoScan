@@ -6,6 +6,7 @@ examp/
 
 # Ignore the virtual environment
 venv/
+.venv/
 
 # All pdf files
 *.pdf
