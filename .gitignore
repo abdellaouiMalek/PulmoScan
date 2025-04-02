@@ -10,4 +10,6 @@ venv/
 # All pdf files
 *.pdf
 
-NIH_Chest_Data/
+data/
+cleaned_subtypes_with_mapping.csv
+subtype_conflicts
