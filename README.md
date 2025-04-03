@@ -1,4 +1,5 @@
 # PulmoScan: Deep Learning for Lung Nodule Detection & Classification
+📌 An academic project at **ESPRIT School of Engineering**
 
 ## 🚀 Project Overview
 
@@ -52,3 +53,8 @@ To run this project, the following packages are required:
 git clone https://github.com/your-username/PulmoScan.git
 pip install -r requirements.txt
 ```
+---
+
+**Disclaimer**: This project is intended as a research tool and should not replace professional medical diagnoses. Always consult healthcare professionals for accurate diagnoses.
+
+---
