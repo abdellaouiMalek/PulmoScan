@@ -3,11 +3,12 @@
 
 ## 🚀 Project Overview
 
-### Motivation
+### 💡 Motivation
 Lung nodule detection and classification is a critical challenge in medical imaging, as early diagnosis significantly improves survival rates. Traditional methods often suffer from:
 - **Time-consuming processes**
 - **High false positives in CT scans**
 - **Human errors**
+  
 PulmoScan leverages **Deep Learning** to automate lung nodule detection, improving accuracy and enabling early diagnosis.
 
 ### 🔬 Scientific Significance
