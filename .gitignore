@@ -6,6 +6,14 @@ examp/
 
 # Ignore the virtual environment
 venv/
+newenv/
+.venv/
+gpu_env/
 
 # All pdf files
 *.pdf
+
+# Ignore the output folder
+Models/
+
+gpu-requirements/
