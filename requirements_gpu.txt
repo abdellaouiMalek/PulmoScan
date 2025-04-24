@@ -17,3 +17,9 @@ pascal-voc-tools==0.2.3
 pascal-voc==2.1.12
 ipykernel
 ipywidgets
+torch
+torchvision
+monai
+gdown
+argparse==1.1
+nibabel==2.4.1

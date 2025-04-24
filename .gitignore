@@ -17,3 +17,5 @@ gpu_env/
 Models/
 
 gpu-requirements/
+
+Models/MedicalNet/
