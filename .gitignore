@@ -10,3 +10,19 @@ venv/
 
 # All pdf files
 *.pdf
+
+# All csv files
+*.csv
+
+# Ignore the Data folder
+cancer_classification/
+
+# Ignore the Data folder
+cancer_stage/
+
+cancer_stage/Data_understanding.py
+
+# Ignore the Data folder
+cancer_type/balanced_images/
+
+cancer_type/processed_images/
