@@ -26,3 +26,19 @@ cancer_stage/Data_understanding.py
 cancer_type/balanced_images/
 
 cancer_type/processed_images/
+
+balanced_images/
+processed_images/
+output/
+logs/
+checkpoints/
+data/
+1_preprocess.ipynb
+2_patch_extraction.ipynb
+augmentation_examples.png
+balanced_category_distribution.png
+balanced_split_distribution.png
+cancer_distribution.png
+*.png
+*.log
+
