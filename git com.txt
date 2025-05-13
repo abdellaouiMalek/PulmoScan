@@ -1,0 +1,9 @@
+cd /d D:/
+cd PLUMOSCAN
+cd PulmoScan
+venv\Scripts\activate
+git branch
+git add .gitignore
+git commit -m "trait1"
+git push origin cancer_type
+git status
