@@ -19,7 +19,9 @@ import cv2
 from tqdm import tqdm
 import random
 import warnings
-warnings.filterwarnings('ignore')
+
+warnings.filterwarnings("ignore")
+
 
 def load_svs_slide(slide_path):
     """
@@ -38,6 +40,7 @@ def load_svs_slide(slide_path):
         print(f"Error loading slide {slide_path}: {e}")
         return None
 
+
 def get_slide_info(slide):
     """
     Get information about a slide
@@ -49,16 +52,18 @@ def get_slide_info(slide):
         Dictionary containing slide information
     """
     info = {
-        'dimensions': slide.dimensions,
-        'level_count': slide.level_count,
-        'level_dimensions': slide.level_dimensions,
-        'level_downsamples': slide.level_downsamples,
-        'properties': dict(slide.properties)
+        "dimensions": slide.dimensions,
+        "level_count": slide.level_count,
+        "level_dimensions": slide.level_dimensions,
+        "level_downsamples": slide.level_downsamples,
+        "properties": dict(slide.properties),
     }
     return info
 
-def visualize_slide_thumbnail(slide, title='Slide Thumbnail', figsize=(10, 10),
-                             save_path=None, max_size=1000):
+
+def visualize_slide_thumbnail(
+    slide, title="Slide Thumbnail", figsize=(10, 10), save_path=None, max_size=1000
+):
     """
     Visualize a thumbnail of the slide
 
@@ -90,7 +95,7 @@ def visualize_slide_thumbnail(slide, title='Slide Thumbnail', figsize=(10, 10),
     plt.figure(figsize=figsize)
     plt.imshow(thumbnail)
     plt.title(f"{title}\nDimensions: {width}x{height}", fontsize=14)
-    plt.axis('off')
+    plt.axis("off")
     plt.tight_layout()
 
     # Save figure if path provided
@@ -101,8 +106,18 @@ def visualize_slide_thumbnail(slide, title='Slide Thumbnail', figsize=(10, 10),
 
     return thumbnail
 
-def visualize_slide_region(slide, x=0, y=0, level=0, width=1024, height=1024,
-                          title='Slide Region', figsize=(10, 10), save_path=None):
+
+def visualize_slide_region(
+    slide,
+    x=0,
+    y=0,
+    level=0,
+    width=1024,
+    height=1024,
+    title="Slide Region",
+    figsize=(10, 10),
+    save_path=None,
+):
     """
     Visualize a region of the slide
 
@@ -120,13 +135,13 @@ def visualize_slide_region(slide, x=0, y=0, level=0, width=1024, height=1024,
     """
     # Read region
     region = slide.read_region((x, y), level, (width, height))
-    region = region.convert('RGB')  # Remove alpha channel
+    region = region.convert("RGB")  # Remove alpha channel
 
     # Display region
     plt.figure(figsize=figsize)
     plt.imshow(region)
     plt.title(f"{title}\nPosition: ({x}, {y}), Level: {level}", fontsize=14)
-    plt.axis('off')
+    plt.axis("off")
     plt.tight_layout()
 
     # Save figure if path provided
@@ -137,8 +152,16 @@ def visualize_slide_region(slide, x=0, y=0, level=0, width=1024, height=1024,
 
     return region
 
-def visualize_slide_grid(slide, grid_size=(3, 3), level=0, tile_size=1024,
-                        title='Slide Grid', figsize=(15, 15), save_path=None):
+
+def visualize_slide_grid(
+    slide,
+    grid_size=(3, 3),
+    level=0,
+    tile_size=1024,
+    title="Slide Grid",
+    figsize=(15, 15),
+    save_path=None,
+):
     """
     Visualize a grid of regions from the slide
 
@@ -177,7 +200,7 @@ def visualize_slide_grid(slide, grid_size=(3, 3), level=0, tile_size=1024,
 
             # Read region
             region = slide.read_region((x, y), level, (tile_size, tile_size))
-            region = region.convert('RGB')  # Remove alpha channel
+            region = region.convert("RGB")  # Remove alpha channel
             regions.append(region)
 
             # Display region
@@ -192,7 +215,7 @@ def visualize_slide_grid(slide, grid_size=(3, 3), level=0, tile_size=1024,
 
             ax.imshow(region)
             ax.set_title(f"({x}, {y})", fontsize=10)
-            ax.axis('off')
+            ax.axis("off")
 
     plt.tight_layout()
     plt.subplots_adjust(top=0.95)
@@ -204,6 +227,7 @@ def visualize_slide_grid(slide, grid_size=(3, 3), level=0, tile_size=1024,
     plt.show()
 
     return regions
+
 
 def detect_tissue_regions(slide, level=None, threshold=220):
     """
@@ -226,13 +250,15 @@ def detect_tissue_regions(slide, level=None, threshold=220):
 
     # Get thumbnail at the specified level
     thumbnail = slide.read_region((0, 0), level, (width, height))
-    thumbnail = thumbnail.convert('RGB')  # Remove alpha channel
+    thumbnail = thumbnail.convert("RGB")  # Remove alpha channel
 
     # Convert to grayscale
     thumbnail_gray = cv2.cvtColor(np.array(thumbnail), cv2.COLOR_RGB2GRAY)
 
     # Apply thresholding to identify tissue regions
-    _, tissue_mask = cv2.threshold(thumbnail_gray, threshold, 255, cv2.THRESH_BINARY_INV)
+    _, tissue_mask = cv2.threshold(
+        thumbnail_gray, threshold, 255, cv2.THRESH_BINARY_INV
+    )
 
     # Calculate scale factors to map back to level 0
     scale_factor_x = slide.dimensions[0] / width
@@ -240,8 +266,15 @@ def detect_tissue_regions(slide, level=None, threshold=220):
 
     return tissue_mask, thumbnail, (scale_factor_x, scale_factor_y)
 
-def visualize_tissue_detection(slide, tissue_mask, thumbnail, title='Tissue Detection',
-                              figsize=(15, 10), save_path=None):
+
+def visualize_tissue_detection(
+    slide,
+    tissue_mask,
+    thumbnail,
+    title="Tissue Detection",
+    figsize=(15, 10),
+    save_path=None,
+):
     """
     Visualize tissue detection results
 
@@ -262,13 +295,13 @@ def visualize_tissue_detection(slide, tissue_mask, thumbnail, title='Tissue Dete
 
     # Display original thumbnail
     ax1.imshow(thumbnail)
-    ax1.set_title('Original Thumbnail', fontsize=14)
-    ax1.axis('off')
+    ax1.set_title("Original Thumbnail", fontsize=14)
+    ax1.axis("off")
 
     # Display tissue mask
-    ax2.imshow(tissue_mask, cmap='gray')
-    ax2.set_title('Tissue Mask', fontsize=14)
-    ax2.axis('off')
+    ax2.imshow(tissue_mask, cmap="gray")
+    ax2.set_title("Tissue Mask", fontsize=14)
+    ax2.axis("off")
 
     plt.tight_layout()
     plt.subplots_adjust(top=0.9)
@@ -279,8 +312,10 @@ def visualize_tissue_detection(slide, tissue_mask, thumbnail, title='Tissue Dete
 
     plt.show()
 
-def extract_tissue_tiles(slide, tissue_mask, scale_factors, level=0, tile_size=1024,
-                        overlap=0, max_tiles=10):
+
+def extract_tissue_tiles(
+    slide, tissue_mask, scale_factors, level=0, tile_size=1024, overlap=0, max_tiles=10
+):
     """
     Extract tiles from tissue regions
 
@@ -297,7 +332,9 @@ def extract_tissue_tiles(slide, tissue_mask, scale_factors, level=0, tile_size=1
         List of (x, y, tile) tuples
     """
     # Find contours in the tissue mask
-    contours, _ = cv2.findContours(tissue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(
+        tissue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+    )
 
     # Sort contours by area (largest first)
     contours = sorted(contours, key=cv2.contourArea, reverse=True)
@@ -324,7 +361,7 @@ def extract_tissue_tiles(slide, tissue_mask, scale_factors, level=0, tile_size=1
             for j in range(y_orig, y_orig + h_orig - tile_size + 1, step):
                 # Extract tile
                 tile = slide.read_region((i, j), level, (tile_size, tile_size))
-                tile = tile.convert('RGB')  # Remove alpha channel
+                tile = tile.convert("RGB")  # Remove alpha channel
 
                 # Add to list
                 tiles.append((i, j, tile))
@@ -335,8 +372,10 @@ def extract_tissue_tiles(slide, tissue_mask, scale_factors, level=0, tile_size=1
 
     return tiles
 
-def visualize_extracted_tiles(tiles, grid_size=None, title='Extracted Tiles',
-                             figsize=(15, 15), save_path=None):
+
+def visualize_extracted_tiles(
+    tiles, grid_size=None, title="Extracted Tiles", figsize=(15, 15), save_path=None
+):
     """
     Visualize extracted tiles
 
@@ -352,7 +391,10 @@ def visualize_extracted_tiles(tiles, grid_size=None, title='Extracted Tiles',
     """
     # Determine grid size if not specified
     if grid_size is None:
-        grid_size = (int(np.ceil(np.sqrt(len(tiles)))), int(np.ceil(np.sqrt(len(tiles)))))
+        grid_size = (
+            int(np.ceil(np.sqrt(len(tiles)))),
+            int(np.ceil(np.sqrt(len(tiles)))),
+        )
 
     # Create figure
     fig, axes = plt.subplots(grid_size[0], grid_size[1], figsize=figsize)
@@ -371,11 +413,11 @@ def visualize_extracted_tiles(tiles, grid_size=None, title='Extracted Tiles',
         if i < len(axes):
             axes[i].imshow(tile)
             axes[i].set_title(f"({x}, {y})", fontsize=10)
-            axes[i].axis('off')
+            axes[i].axis("off")
 
     # Hide empty subplots
     for i in range(len(tiles), len(axes)):
-        axes[i].axis('off')
+        axes[i].axis("off")
 
     plt.tight_layout()
     plt.subplots_adjust(top=0.95)
@@ -386,8 +428,15 @@ def visualize_extracted_tiles(tiles, grid_size=None, title='Extracted Tiles',
 
     plt.show()
 
-def visualize_magnification_levels(slide, x=None, y=None, figsize=(15, 10),
-                                 title='Magnification Levels', save_path=None):
+
+def visualize_magnification_levels(
+    slide,
+    x=None,
+    y=None,
+    figsize=(15, 10),
+    title="Magnification Levels",
+    save_path=None,
+):
     """
     Visualize the same region at different magnification levels
 
@@ -430,12 +479,15 @@ def visualize_magnification_levels(slide, x=None, y=None, figsize=(15, 10),
 
         # Read region
         region = slide.read_region((level_x, level_y), level, (level_size, level_size))
-        region = region.convert('RGB')  # Remove alpha channel
+        region = region.convert("RGB")  # Remove alpha channel
 
         # Display region
         axes[level].imshow(region)
-        axes[level].set_title(f"Level {level}\nDownsample: {slide.level_downsamples[level]:.1f}x", fontsize=10)
-        axes[level].axis('off')
+        axes[level].set_title(
+            f"Level {level}\nDownsample: {slide.level_downsamples[level]:.1f}x",
+            fontsize=10,
+        )
+        axes[level].axis("off")
 
     plt.tight_layout()
     plt.subplots_adjust(top=0.85)
@@ -446,9 +498,16 @@ def visualize_magnification_levels(slide, x=None, y=None, figsize=(15, 10),
 
     plt.show()
 
-def visualize_slide_with_annotations(slide, annotations, level=None,
-                                   title='Slide with Annotations', figsize=(12, 12),
-                                   save_path=None, max_size=1000):
+
+def visualize_slide_with_annotations(
+    slide,
+    annotations,
+    level=None,
+    title="Slide with Annotations",
+    figsize=(12, 12),
+    save_path=None,
+    max_size=1000,
+):
     """
     Visualize a slide with annotations
 
@@ -473,7 +532,7 @@ def visualize_slide_with_annotations(slide, annotations, level=None,
 
     # Get thumbnail at the specified level
     thumbnail = slide.read_region((0, 0), level, (width, height))
-    thumbnail = thumbnail.convert('RGB')  # Remove alpha channel
+    thumbnail = thumbnail.convert("RGB")  # Remove alpha channel
 
     # Calculate scale factor to map from level 0 to the current level
     scale_factor_x = width / slide.dimensions[0]
@@ -492,16 +551,30 @@ def visualize_slide_with_annotations(slide, annotations, level=None,
         h_scaled = h * scale_factor_y
 
         # Add rectangle
-        rect = Rectangle((x_scaled, y_scaled), w_scaled, h_scaled,
-                        linewidth=2, edgecolor=color, facecolor='none')
+        rect = Rectangle(
+            (x_scaled, y_scaled),
+            w_scaled,
+            h_scaled,
+            linewidth=2,
+            edgecolor=color,
+            facecolor="none",
+        )
         plt.gca().add_patch(rect)
 
         # Add label
-        plt.text(x_scaled, y_scaled - 5, label, color=color, fontsize=10,
-                backgroundcolor='white', ha='left', va='bottom')
+        plt.text(
+            x_scaled,
+            y_scaled - 5,
+            label,
+            color=color,
+            fontsize=10,
+            backgroundcolor="white",
+            ha="left",
+            va="bottom",
+        )
 
     plt.title(title, fontsize=14)
-    plt.axis('off')
+    plt.axis("off")
     plt.tight_layout()
 
     # Save figure if path provided
@@ -510,7 +583,10 @@ def visualize_slide_with_annotations(slide, annotations, level=None,
 
     plt.show()
 
-def detect_lung_nodules(slide, level=None, threshold=220, min_size=1000, max_size=50000):
+
+def detect_lung_nodules(
+    slide, level=None, threshold=220, min_size=1000, max_size=50000
+):
     """
     Detect potential lung nodules in a slide using image processing techniques
 
@@ -533,13 +609,15 @@ def detect_lung_nodules(slide, level=None, threshold=220, min_size=1000, max_siz
 
     # Get thumbnail at the specified level
     thumbnail = slide.read_region((0, 0), level, (width, height))
-    thumbnail = thumbnail.convert('RGB')  # Remove alpha channel
+    thumbnail = thumbnail.convert("RGB")  # Remove alpha channel
 
     # Convert to grayscale
     thumbnail_gray = cv2.cvtColor(np.array(thumbnail), cv2.COLOR_RGB2GRAY)
 
     # Apply thresholding to identify tissue regions
-    _, tissue_mask = cv2.threshold(thumbnail_gray, threshold, 255, cv2.THRESH_BINARY_INV)
+    _, tissue_mask = cv2.threshold(
+        thumbnail_gray, threshold, 255, cv2.THRESH_BINARY_INV
+    )
 
     # Apply morphological operations to enhance nodule detection
     kernel = np.ones((5, 5), np.uint8)
@@ -547,7 +625,9 @@ def detect_lung_nodules(slide, level=None, threshold=220, min_size=1000, max_siz
     tissue_mask = cv2.morphologyEx(tissue_mask, cv2.MORPH_CLOSE, kernel)
 
     # Find contours
-    contours, _ = cv2.findContours(tissue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(
+        tissue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+    )
 
     # Filter contours by size and shape to identify potential nodules
     nodules = []
@@ -562,7 +642,9 @@ def detect_lung_nodules(slide, level=None, threshold=220, min_size=1000, max_siz
 
             # Calculate circularity (4*pi*area/perimeter^2)
             perimeter = cv2.arcLength(contour, True)
-            circularity = 4 * np.pi * area / (perimeter * perimeter) if perimeter > 0 else 0
+            circularity = (
+                4 * np.pi * area / (perimeter * perimeter) if perimeter > 0 else 0
+            )
 
             # Filter by circularity (nodules tend to be more circular)
             if circularity > 0.6:
@@ -574,8 +656,15 @@ def detect_lung_nodules(slide, level=None, threshold=220, min_size=1000, max_siz
 
     return nodules, thumbnail, (scale_factor_x, scale_factor_y)
 
-def visualize_lung_nodules(slide, nodules, thumbnail, title='Lung Nodule Detection',
-                         figsize=(15, 10), save_path=None):
+
+def visualize_lung_nodules(
+    slide,
+    nodules,
+    thumbnail,
+    title="Lung Nodule Detection",
+    figsize=(15, 10),
+    save_path=None,
+):
     """
     Visualize detected lung nodules
 
@@ -597,12 +686,20 @@ def visualize_lung_nodules(slide, nodules, thumbnail, title='Lung Nodule Detecti
 
     # Add rectangles for nodules
     for i, (x, y, w, h) in enumerate(nodules):
-        rect = Rectangle((x, y), w, h, linewidth=2, edgecolor='red', facecolor='none')
+        rect = Rectangle((x, y), w, h, linewidth=2, edgecolor="red", facecolor="none")
         plt.gca().add_patch(rect)
-        plt.text(x, y - 5, f"Nodule {i+1}", color='red', fontsize=10,
-                backgroundcolor='white', ha='left', va='bottom')
+        plt.text(
+            x,
+            y - 5,
+            f"Nodule {i+1}",
+            color="red",
+            fontsize=10,
+            backgroundcolor="white",
+            ha="left",
+            va="bottom",
+        )
 
-    plt.axis('off')
+    plt.axis("off")
     plt.tight_layout()
 
     # Save figure if path provided
@@ -610,6 +707,7 @@ def visualize_lung_nodules(slide, nodules, thumbnail, title='Lung Nodule Detecti
         plt.savefig(save_path)
 
     plt.show()
+
 
 def extract_nodule_images(slide, nodules, scale_factors, level=0, padding=50):
     """
@@ -644,15 +742,21 @@ def extract_nodule_images(slide, nodules, scale_factors, level=0, padding=50):
 
         # Extract nodule image
         nodule_img = slide.read_region((x_pad, y_pad), level, (w_pad, h_pad))
-        nodule_img = nodule_img.convert('RGB')  # Remove alpha channel
+        nodule_img = nodule_img.convert("RGB")  # Remove alpha channel
 
         # Add to list
         nodule_images.append((x_orig, y_orig, nodule_img))
 
     return nodule_images
 
-def visualize_nodule_grid(nodule_images, grid_size=None, title='Lung Nodules',
-                        figsize=(15, 15), save_path=None):
+
+def visualize_nodule_grid(
+    nodule_images,
+    grid_size=None,
+    title="Lung Nodules",
+    figsize=(15, 15),
+    save_path=None,
+):
     """
     Visualize a grid of extracted nodule images
 
@@ -668,7 +772,10 @@ def visualize_nodule_grid(nodule_images, grid_size=None, title='Lung Nodules',
     """
     # Determine grid size if not specified
     if grid_size is None:
-        grid_size = (int(np.ceil(np.sqrt(len(nodule_images)))), int(np.ceil(np.sqrt(len(nodule_images)))))
+        grid_size = (
+            int(np.ceil(np.sqrt(len(nodule_images)))),
+            int(np.ceil(np.sqrt(len(nodule_images)))),
+        )
 
     # Create figure
     fig, axes = plt.subplots(grid_size[0], grid_size[1], figsize=figsize)
@@ -687,11 +794,11 @@ def visualize_nodule_grid(nodule_images, grid_size=None, title='Lung Nodules',
         if i < len(axes):
             axes[i].imshow(nodule_img)
             axes[i].set_title(f"Nodule {i+1} at ({x}, {y})", fontsize=10)
-            axes[i].axis('off')
+            axes[i].axis("off")
 
     # Hide empty subplots
     for i in range(len(nodule_images), len(axes)):
-        axes[i].axis('off')
+        axes[i].axis("off")
 
     plt.tight_layout()
     plt.subplots_adjust(top=0.95)
@@ -702,7 +809,10 @@ def visualize_nodule_grid(nodule_images, grid_size=None, title='Lung Nodules',
 
     plt.show()
 
-def process_slide_batch(slide_paths, output_dir='slide_visualizations', max_slides=None):
+
+def process_slide_batch(
+    slide_paths, output_dir="slide_visualizations", max_slides=None
+):
     """
     Process a batch of slides and generate visualizations
 
@@ -740,31 +850,42 @@ def process_slide_batch(slide_paths, output_dir='slide_visualizations', max_slid
             info = get_slide_info(slide)
 
             # Save slide info as text file
-            with open(os.path.join(slide_dir, 'slide_info.txt'), 'w') as f:
+            with open(os.path.join(slide_dir, "slide_info.txt"), "w") as f:
                 for key, value in info.items():
                     f.write(f"{key}: {value}\n")
 
             # Visualize slide thumbnail
-            visualize_slide_thumbnail(slide, title=f"Slide: {slide_name}",
-                                    save_path=os.path.join(slide_dir, 'thumbnail.png'))
+            visualize_slide_thumbnail(
+                slide,
+                title=f"Slide: {slide_name}",
+                save_path=os.path.join(slide_dir, "thumbnail.png"),
+            )
 
             # Detect tissue regions
             tissue_mask, thumbnail, scale_factors = detect_tissue_regions(slide)
 
             # Visualize tissue detection
-            visualize_tissue_detection(slide, tissue_mask, thumbnail,
-                                     save_path=os.path.join(slide_dir, 'tissue_detection.png'))
+            visualize_tissue_detection(
+                slide,
+                tissue_mask,
+                thumbnail,
+                save_path=os.path.join(slide_dir, "tissue_detection.png"),
+            )
 
             # Extract tissue tiles
             tiles = extract_tissue_tiles(slide, tissue_mask, scale_factors, max_tiles=9)
 
             # Visualize extracted tiles
-            visualize_extracted_tiles(tiles, grid_size=(3, 3),
-                                    save_path=os.path.join(slide_dir, 'extracted_tiles.png'))
+            visualize_extracted_tiles(
+                tiles,
+                grid_size=(3, 3),
+                save_path=os.path.join(slide_dir, "extracted_tiles.png"),
+            )
 
             # Visualize magnification levels
-            visualize_magnification_levels(slide,
-                                         save_path=os.path.join(slide_dir, 'magnification_levels.png'))
+            visualize_magnification_levels(
+                slide, save_path=os.path.join(slide_dir, "magnification_levels.png")
+            )
 
             # Close slide
             slide.close()
@@ -774,6 +895,7 @@ def process_slide_batch(slide_paths, output_dir='slide_visualizations', max_slid
 
     print(f"Processed {len(slide_paths)} slides. Visualizations saved to {output_dir}")
 
+
 def main():
     """
     Main function to demonstrate SVS visualization
@@ -781,17 +903,36 @@ def main():
     import argparse
 
     # Parse command line arguments
-    parser = argparse.ArgumentParser(description='SVS Visualization')
-    parser.add_argument('--slide_dir', type=str, required=True, help='Directory containing SVS files')
-    parser.add_argument('--output_dir', type=str, default='slide_visualizations', help='Directory to save visualizations')
-    parser.add_argument('--max_slides', type=int, default=None, help='Maximum number of slides to process')
+    parser = argparse.ArgumentParser(description="SVS Visualization")
+    parser.add_argument(
+        "--slide_dir", type=str, required=True, help="Directory containing SVS files"
+    )
+    parser.add_argument(
+        "--output_dir",
+        type=str,
+        default="slide_visualizations",
+        help="Directory to save visualizations",
+    )
+    parser.add_argument(
+        "--max_slides",
+        type=int,
+        default=None,
+        help="Maximum number of slides to process",
+    )
     args = parser.parse_args()
 
     # Get list of SVS files
-    slide_paths = [os.path.join(args.slide_dir, f) for f in os.listdir(args.slide_dir) if f.endswith('.svs')]
+    slide_paths = [
+        os.path.join(args.slide_dir, f)
+        for f in os.listdir(args.slide_dir)
+        if f.endswith(".svs")
+    ]
 
     # Process slides
-    process_slide_batch(slide_paths, output_dir=args.output_dir, max_slides=args.max_slides)
+    process_slide_batch(
+        slide_paths, output_dir=args.output_dir, max_slides=args.max_slides
+    )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

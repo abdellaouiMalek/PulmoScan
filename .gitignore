@@ -11,18 +11,32 @@ venv/
 # All pdf files
 *.pdf
 
+*.sqlite3
+
 # All csv files
 *.csv
 
-# Ignore the Data folder
+# Ignore the cancer_classification folder
 cancer_classification/
 
-# Ignore the Data folder
+# Ignore the cancer_stage folder
 cancer_stage/
 
-cancer_stage/Data_understanding.py
-
-# Ignore the Data folder
+# Ignore the cancer_type folder
 cancer_type/balanced_images/
-
 cancer_type/processed_images/
+
+cancer_stage/.ipynb_checkpoints/
+cancer_stage/checkpoints/
+cancer_stage/densenet121_checkpoints/
+cancer_stage/densenet121_checkpoints_balanced/
+cancer_stage/preprocessed_data/
+cancer_stage/preprocessed_data_integrated/
+
+cancer_type/.ipynb_checkpoints/
+cancer_type/balanced_images/
+cancer_type/processed_images/
+
+frontend/
+main/
+PulmoScan/
