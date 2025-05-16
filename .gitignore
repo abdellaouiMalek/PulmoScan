@@ -1,11 +1,60 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/uploads/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Models (large files)
+*.h5
+*.keras
+!models/demo_model/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Project specific
+debug.log
+results/
+
 # Ignore the Data folder
 Data/
 
 # Ignore the examp folder
 examp/
-
-# Ignore the virtual environment
-venv/
 
 # All pdf files
 *.pdf
