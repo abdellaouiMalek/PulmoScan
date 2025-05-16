@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}PulmoScan - Profil{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i> Profil</h5>
+                </div>
+                <div class="card-body text-center">
+                    {% if request.user.profile.profile_image %}
+                        <img src="{{ request.user.profile.profile_image.url }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto" style="width: 150px; height: 150px;">
+                            <i class="fas fa-user fa-5x text-white"></i>
+                        </div>
+                    {% endif %}
+                    <h5 class="my-3">{{ request.user.get_full_name }}</h5>
+                    <p class="text-muted mb-1">{{ request.user.profile.title }}</p>
+                    <p class="text-muted mb-4">{{ request.user.profile.specialty }}</p>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i> Statistiques</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Analyses effectuées
+                            <span class="badge bg-primary rounded-pill">{{ request.user.scanimage_set.count }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Cas malins détectés
+                            <span class="badge bg-danger rounded-pill">0</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Cas bénins détectés
+                            <span class="badge bg-success rounded-pill">0</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-user-edit me-2"></i> Modifier le profil</h5>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Nom d'utilisateur</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ request.user.username }}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Nom complet</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ request.user.get_full_name }}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ request.user.email }}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Titre</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ form.title }}
+                                {% if form.title.errors %}
+                                    <div class="text-danger">
+                                        {{ form.title.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Institution</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ form.institution }}
+                                {% if form.institution.errors %}
+                                    <div class="text-danger">
+                                        {{ form.institution.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Spécialité</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ form.specialty }}
+                                {% if form.specialty.errors %}
+                                    <div class="text-danger">
+                                        {{ form.specialty.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Photo de profil</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ form.profile_image }}
+                                {% if form.profile_image.errors %}
+                                    <div class="text-danger">
+                                        {{ form.profile_image.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9 text-secondary">
+                                <button type="submit" class="btn btn-primary px-4">Enregistrer les modifications</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

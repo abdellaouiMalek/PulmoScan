@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>{% block title %}{{ title|default:"PulmoScan - Medical Dashboard" }}{% endblock %}</title>
+  <meta name="description" content="PulmoScan - Système de Détection du Cancer du Poumon">
+  <meta name="keywords" content="cancer, poumon, détection, IA, intelligence artificielle, santé">
+
+  <!-- Favicons -->
+  <link href="{% static 'medical/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'medical/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'medical/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'medical/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'medical/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'medical/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'medical/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'medical/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'medical/css/main.css' %}" rel="stylesheet">
+
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}index-page{% endblock %}">
+
+  <header id="header" class="header sticky-top">
+
+    <div class="topbar d-flex align-items-center">
+      <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="d-none d-md-flex align-items-center">
+          <i class="bi bi-clock me-1"></i> Monday - Saturday, 8AM to 10PM
+        </div>
+        <div class="d-flex align-items-center">
+          <i class="bi bi-phone me-1"></i> Call us now +12345678
+        </div>
+      </div>
+    </div><!-- End Top Bar -->
+
+    <div class="branding d-flex align-items-center">
+
+      <div class="container position-relative d-flex align-items-center justify-content-end">
+        <a href="{% url 'medical_home' %}" class="logo d-flex align-items-center me-auto">
+          <img src="{% static 'medical/img/logo.png' %}" alt="PulmoScan Logo">
+          <span class="d-none d-lg-block">PulmoScan</span>
+          <!-- Uncomment the line below if you also wish to use a text logo -->
+          <!-- <h1 class="sitename">PulmoScan</h1>  -->
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="{% url 'medical_home' %}#hero" class="active">Home</a></li>
+            <li><a href="{% url 'medical_home' %}#about">About</a></li>
+            <li><a href="{% url 'medical_home' %}#services">Services</a></li>
+            <li><a href="{% url 'medical_home' %}#departments">Departments</a></li>
+            <li><a href="{% url 'medical_home' %}#doctors">Doctors</a></li>
+            <li class="dropdown"><a href="#"><span>Cancer-Classification</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'upload' %}">Analyze Image</a></li>
+                <li><a href="{% url 'results' %}">Results History</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+              </ul>
+            </li>
+            <li><a href="{% url 'medical_home' %}#contact">Contact</a></li>
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+        <a class="cta-btn" href="{% url 'medical_home' %}#appointment">Make an Appointment</a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <main class="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer" class="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-5 col-md-12 footer-info">
+            <a href="{% url 'medical_home' %}" class="logo d-flex align-items-center">
+              <span>PulmoScan</span>
+            </a>
+            <p>A comprehensive lung cancer detection system using artificial intelligence and deep learning.</p>
+            <div class="social-links mt-3">
+              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="{% url 'medical_home' %}">Home</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="{% url 'medical_home' %}#about">About us</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="{% url 'medical_home' %}#services">Services</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-6 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Lung Cancer Detection</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Medical Imaging Analysis</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">AI Diagnostics</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Health Monitoring</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Research Collaboration</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+            <h4>Contact Us</h4>
+            <p>
+              123 Medical Avenue <br>
+              Paris, 75000<br>
+              France <br><br>
+              <strong>Phone:</strong> +33 1 23 45 67 89<br>
+              <strong>Email:</strong> contact@pulmoscan.com<br>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>PulmoScan</span></strong>. All Rights Reserved
+      </div>
+    </div>
+
+  </footer><!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'medical/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'medical/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'medical/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'medical/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'medical/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'medical/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'medical/js/main.js' %}"></script>
+
+  {% block extra_js %}{% endblock %}
+
+</body>
+
+</html>
