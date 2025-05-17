@@ -1,12 +1,33 @@
-# Ignore the Data folder
+# Ignore data folders
 Data/
-
-# Ignore the examp folder
 examp/
 
-# Ignore the virtual environment
+# Ignore virtual environments
 venv/
 .venv/
+env/
 
-# All pdf files
+# Ignore certain file types
 *.pdf
+*.sqlite3
+*.csv
+*.pth
+*.png
+
+# Ignore whole folders
+frontend/
+main/
+django/
+init_front/
+evaluationScript/
+
+# Ignore everything in the folder
+cancer_stage/*
+# But not these files
+!cancer_stage/main.ipynb
+!cancer_stage/densenet_main.ipynb
+
+
+Cancer_Classification.ipynb
+manage.py
+Nodules_Detector.ipynb
