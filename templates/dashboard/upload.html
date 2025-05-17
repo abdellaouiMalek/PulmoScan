@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+
+{% block title %}PulmoScan - Analyze an Image{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-5 mb-4">
+            <i class="fas fa-upload me-2"></i> Analyze an Image
+        </h1>
+        <p class="lead">
+            Upload a lung scan image to analyze it with our EfficientNetB7 model.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-4">Upload an Image</h5>
+
+                <div id="upload-container">
+                    <!-- Simplified upload form -->
+                    <form id="upload-form" class="mb-4">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="file-input" class="form-label">Select a lung scan image</label>
+                            <input type="file" id="file-input" class="form-control" accept="image/*">
+                            <div class="form-text">Accepted formats: JPG, PNG, BMP, etc.</div>
+                        </div>
+
+                        <div id="preview-container" class="text-center mb-4 d-none">
+                            <h5>Image Preview</h5>
+                            <img id="image-preview" class="img-fluid img-thumbnail mb-3" style="max-height: 300px;">
+                        </div>
+
+                        <div class="text-center">
+                            <button type="button" id="analyze-btn" class="btn btn-primary btn-lg" disabled>
+                                <i class="fas fa-microscope me-2"></i> Analyze Image
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="result-container" class="d-none">
+                    <div class="text-center mb-4">
+                        <div id="loading-spinner" class="d-none">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Analysis in progress...</p>
+                        </div>
+
+                        <div id="result-content" class="d-none">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img id="result-image" class="img-fluid img-thumbnail mb-3">
+                                </div>
+                                <div class="col-md-6 text-start">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Analysis Result</h4>
+                                            <p class="card-text">
+                                                <strong>Diagnosis:</strong>
+                                                <span id="result-diagnosis"></span>
+                                            </p>
+                                            <p class="card-text">
+                                                <strong>Probability:</strong>
+                                                <span id="result-probability"></span>
+                                            </p>
+                                            <p class="card-text">
+                                                <strong>Date:</strong>
+                                                <span id="result-date"></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <button id="new-analysis-btn" class="btn btn-primary">
+                                    <i class="fas fa-plus-circle me-2"></i> New Analysis
+                                </button>
+                                <a href="{% url 'results' %}" class="btn btn-outline-secondary ms-2">
+                                    <i class="fas fa-list-alt me-2"></i> View History
+                                </a>
+                            </div>
+                        </div>
+
+                        <div id="error-message" class="alert alert-danger d-none">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <span id="error-text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        const fileInput = $('#file-input');
+        const imagePreview = $('#image-preview');
+        const previewContainer = $('#preview-container');
+        const analyzeBtn = $('#analyze-btn');
+        const uploadContainer = $('#upload-container');
+        const resultContainer = $('#result-container');
+        const loadingSpinner = $('#loading-spinner');
+        const resultContent = $('#result-content');
+        const errorMessage = $('#error-message');
+        const errorText = $('#error-text');
+        const newAnalysisBtn = $('#new-analysis-btn');
+        const uploadForm = $('#upload-form');
+
+        // Handle file input change
+        fileInput.on('change', function() {
+            if (this.files && this.files[0]) {
+                handleFile(this.files[0]);
+            } else {
+                // Reset if no file selected
+                previewContainer.addClass('d-none');
+                analyzeBtn.prop('disabled', true);
+            }
+        });
+
+        // Handle file selection
+        function handleFile(file) {
+            if (!file.type.match('image.*')) {
+                alert('Please select a valid image.');
+                fileInput.val('');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.attr('src', e.target.result);
+                previewContainer.removeClass('d-none');
+                analyzeBtn.prop('disabled', false);
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // Analyze button
+        analyzeBtn.on('click', function() {
+            uploadContainer.addClass('d-none');
+            resultContainer.removeClass('d-none');
+            loadingSpinner.removeClass('d-none');
+
+            // Create form data
+            const formData = new FormData();
+            const fileToUpload = fileInput[0].files[0];
+            formData.append('image', fileToUpload);
+
+            console.log('File to upload:', fileToUpload);
+            console.log('FormData created with file');
+
+            // Get CSRF token
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            console.log('CSRF Token:', csrftoken);
+
+            // Send API request
+            console.log('Sending API request to /api/predict/');
+            $.ajax({
+                url: '/api/predict/',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                success: function(response) {
+                    console.log('API response received:', response);
+                    loadingSpinner.addClass('d-none');
+                    resultContent.removeClass('d-none');
+
+                    // Display results
+                    $('#result-image').attr('src', response.image_url);
+                    $('#result-diagnosis').html(
+                        response.is_malignant ?
+                        '<span class="result-malignant"><i class="fas fa-exclamation-triangle me-1"></i> Malignant</span>' :
+                        '<span class="result-benign"><i class="fas fa-check-circle me-1"></i> Benign</span>'
+                    );
+                    $('#result-probability').text((response.prediction * 100).toFixed(2) + '%');
+
+                    // Format date
+                    const date = new Date(response.created_at);
+                    const formattedDate = date.toLocaleDateString('en-US') + ' ' + date.toLocaleTimeString('en-US');
+                    $('#result-date').text(formattedDate);
+                },
+                error: function(xhr, status, error) {
+                    console.error('API error:', xhr.status, xhr.responseText);
+                    console.error('Status:', status);
+                    console.error('Error:', error);
+
+                    loadingSpinner.addClass('d-none');
+                    errorMessage.removeClass('d-none');
+                    uploadContainer.removeClass('d-none');
+                    resultContainer.addClass('d-none');
+
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorText.text(xhr.responseJSON.error);
+                    } else {
+                        errorText.text('An error occurred during analysis. Please try again. (' + xhr.status + ')');
+                    }
+                }
+            });
+        });
+
+        // New analysis button
+        newAnalysisBtn.on('click', function() {
+            resultContainer.addClass('d-none');
+            uploadContainer.removeClass('d-none');
+            previewContainer.addClass('d-none');
+            resultContent.addClass('d-none');
+            errorMessage.addClass('d-none');
+            analyzeBtn.prop('disabled', true);
+            fileInput.val('');
+        });
+    });
+</script>
+{% endblock %}
