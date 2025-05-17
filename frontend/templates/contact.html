@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Contact Us{% endblock %}
+
+{% block content %}
+<!-- Contact Section -->
+<section id="contact" class="contact section">
+
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Contact Us</h2>
+    <p>Get in touch with our team for more information about PulmoScan</p>
+  </div><!-- End Section Title -->
+
+  <div class="mb-5" data-aos="fade-up" data-aos-delay="200">
+    <iframe style="border:0; width: 100%; height: 370px;" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div><!-- End Google Maps -->
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-lg-6 ">
+        <div class="row gy-4">
+          <div class="col-lg-12">
+            <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
+              <i class="bi bi-geo-alt"></i>
+              <h3>Our Address</h3>
+              <p>A108 Adam Street, New York, NY 535022</p>
+            </div>
+          </div><!-- End Info Item -->
+
+          <div class="col-md-6">
+            <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
+              <i class="bi bi-telephone"></i>
+              <h3>Call Us</h3>
+              <p>+1 5589 55488 55</p>
+            </div>
+          </div><!-- End Info Item -->
+
+          <div class="col-md-6">
+            <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
+              <i class="bi bi-envelope"></i>
+              <h3>Email Us</h3>
+              <p>info@pulmoscan.com</p>
+            </div>
+          </div><!-- End Info Item -->
+
+          <div class="col-md-12">
+            <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="500">
+              <i class="bi bi-clock"></i>
+              <h3>Office Hours</h3>
+              <p>Monday - Friday: 9AM to 5PM</p>
+            </div>
+          </div><!-- End Info Item -->
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <form action="{% url 'contact' %}" method="post" role="form" class="php-email-form">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+            </div>
+            <div class="col-md-6 form-group mt-3 mt-md-0">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+          </div>
+          <div class="form-group mt-3">
+            <textarea class="form-control" name="message" rows="7" placeholder="Message" required></textarea>
+          </div>
+          <div class="my-3">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your message has been sent. Thank you!</div>
+          </div>
+          <div class="text-center"><button type="submit">Send Message</button></div>
+        </form>
+      </div><!-- End Contact Form -->
+    </div>
+  </div>
+</section><!-- /Contact Section -->
+
+<!-- FAQ Section -->
+<section id="faq" class="faq section light-background">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Frequently Asked Questions</h2>
+    <p>Common questions about PulmoScan and our services</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10" data-aos="fade-up" data-aos-delay="100">
+        <div class="faq-container">
+          <div class="faq-item">
+            <h3>What is PulmoScan?</h3>
+            <div class="faq-content">
+              <p>PulmoScan is an AI-powered system for lung cancer detection and classification. It analyzes CT scans to identify lung nodules and classify them according to cancer type and stage.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item">
+            <h3>How accurate is PulmoScan?</h3>
+            <div class="faq-content">
+              <p>PulmoScan achieves over 95% accuracy in detecting lung nodules and classifying cancer types, based on validation with thousands of medical images and expert radiologist reviews.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item">
+            <h3>How does PulmoScan integrate with hospital systems?</h3>
+            <div class="faq-content">
+              <p>PulmoScan is designed to integrate seamlessly with existing hospital PACS and EMR systems. Our technical team works with your IT department to ensure smooth implementation.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item">
+            <h3>What types of medical images can PulmoScan analyze?</h3>
+            <div class="faq-content">
+              <p>Currently, PulmoScan is optimized for CT scans of the chest. We are working on expanding to other imaging modalities in future updates.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item">
+            <h3>How long does it take to get results?</h3>
+            <div class="faq-content">
+              <p>PulmoScan typically processes images and provides results within minutes, allowing for quick clinical decision-making.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item">
+            <h3>Is PulmoScan FDA approved?</h3>
+            <div class="faq-content">
+              <p>PulmoScan is currently in the FDA approval process. It is available for research and development purposes, and we expect full approval in the near future.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+        </div>
+      </div><!-- End Faq Column-->
+    </div>
+  </div>
+</section><!-- /FAQ Section -->
+{% endblock %}

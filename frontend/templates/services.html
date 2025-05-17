@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Our Services{% endblock %}
+
+{% block content %}
+<!-- Services Section -->
+<section id="services" class="services section">
+
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Our Services</h2>
+    <p>Advanced lung cancer detection and classification services using AI technology</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-lungs"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Lung Nodule Detection</h3>
+          </a>
+          <p>Our AI system can detect small lung nodules that might be missed in traditional screenings, improving early detection rates and patient outcomes.</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-microscope"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Cancer Classification</h3>
+          </a>
+          <p>Accurate classification of cancer types and stages using deep learning algorithms trained on thousands of medical images.</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-hospital-user"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Medical Consultation</h3>
+          </a>
+          <p>Connect with our network of medical experts for personalized consultation based on your scan results.</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>AI-Powered Analysis</h3>
+          </a>
+          <p>Our advanced AI algorithms analyze CT scans to provide detailed insights that help doctors make better treatment decisions.</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-file-medical-alt"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Comprehensive Reports</h3>
+          </a>
+          <p>Receive detailed reports with visualizations that explain the findings in a way that's easy to understand for both doctors and patients.</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-laptop-medical"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Hospital Integration</h3>
+          </a>
+          <p>Our system integrates seamlessly with existing hospital systems, making it easy to incorporate into your current workflow.</p>
+        </div>
+      </div><!-- End Service Item -->
+    </div>
+  </div>
+</section><!-- /Services Section -->
+
+<!-- Features Section -->
+<section id="features" class="features section light-background">
+  <div class="container">
+    <div class="row justify-content-around gy-4">
+      <div class="col-lg-5 d-flex flex-column justify-content-center" data-aos="fade-up">
+        <h3>Why Choose PulmoScan?</h3>
+        <p>Our AI-powered system offers several advantages over traditional methods:</p>
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="100">
+          <i class="fa-solid fa-check-circle flex-shrink-0"></i>
+          <div>
+            <h4>High Accuracy</h4>
+            <p>Our system achieves over 95% accuracy in detecting and classifying lung nodules.</p>
+          </div>
+        </div><!-- End Icon Box -->
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="200">
+          <i class="fa-solid fa-check-circle flex-shrink-0"></i>
+          <div>
+            <h4>Early Detection</h4>
+            <p>Detect lung cancer at earlier stages when treatment is more effective.</p>
+          </div>
+        </div><!-- End Icon Box -->
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="300">
+          <i class="fa-solid fa-check-circle flex-shrink-0"></i>
+          <div>
+            <h4>Time Efficiency</h4>
+            <p>Get results quickly, allowing for faster treatment decisions.</p>
+          </div>
+        </div><!-- End Icon Box -->
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="400">
+          <i class="fa-solid fa-check-circle flex-shrink-0"></i>
+          <div>
+            <h4>Cost-Effective</h4>
+            <p>Reduce healthcare costs through more efficient diagnosis and treatment planning.</p>
+          </div>
+        </div><!-- End Icon Box -->
+      </div>
+      <div class="features-image col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <img src="{% static 'img/services.jpg' %}" alt="" class="img-fluid">
+      </div>
+    </div>
+  </div>
+</section><!-- /Features Section -->
+
+<!-- Pricing Section -->
+<section id="pricing" class="pricing section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Service Plans</h2>
+    <p>Choose the plan that best fits your needs</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-3">
+      <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="pricing-item">
+          <h3>Basic</h3>
+          <h4><sup>$</sup>99<span> / scan</span></h4>
+          <ul>
+            <li>Lung Nodule Detection</li>
+            <li>Basic Report</li>
+            <li>Email Support</li>
+            <li class="na">Cancer Classification</li>
+            <li class="na">Medical Consultation</li>
+          </ul>
+          <div class="btn-wrap">
+            <a href="{% url 'contact' %}" class="btn-buy">Get Started</a>
+          </div>
+        </div>
+      </div><!-- End Pricing Item -->
+
+      <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="pricing-item featured">
+          <h3>Professional</h3>
+          <h4><sup>$</sup>199<span> / scan</span></h4>
+          <ul>
+            <li>Lung Nodule Detection</li>
+            <li>Detailed Report</li>
+            <li>Priority Support</li>
+            <li>Cancer Classification</li>
+            <li class="na">Medical Consultation</li>
+          </ul>
+          <div class="btn-wrap">
+            <a href="{% url 'contact' %}" class="btn-buy">Get Started</a>
+          </div>
+        </div>
+      </div><!-- End Pricing Item -->
+
+      <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="pricing-item">
+          <span class="advanced">Advanced</span>
+          <h3>Premium</h3>
+          <h4><sup>$</sup>299<span> / scan</span></h4>
+          <ul>
+            <li>Lung Nodule Detection</li>
+            <li>Comprehensive Report</li>
+            <li>24/7 Support</li>
+            <li>Cancer Classification</li>
+            <li>Medical Consultation</li>
+          </ul>
+          <div class="btn-wrap">
+            <a href="{% url 'contact' %}" class="btn-buy">Get Started</a>
+          </div>
+        </div>
+      </div><!-- End Pricing Item -->
+    </div>
+  </div>
+</section><!-- /Pricing Section -->
+
+<!-- Call To Action Section -->
+<section id="call-to-action" class="call-to-action section accent-background">
+  <div class="container">
+    <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+      <div class="col-xl-10">
+        <div class="text-center">
+          <h3>Ready to get started?</h3>
+          <p>Contact us today to learn more about our services and how we can help improve patient outcomes at your medical facility.</p>
+          <a class="cta-btn" href="{% url 'contact' %}">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /Call To Action Section -->
+{% endblock %}

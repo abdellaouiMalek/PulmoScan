@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Login{% endblock %}
+
+{% block body_class %}login-page{% endblock %}
+
+{% block content %}
+<!-- Login Section -->
+<section id="login" class="login section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-8">
+        <div class="login-form-container" data-aos="fade-up">
+          <h2 class="text-center mb-4">Login to Your Account</h2>
+
+          {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <form action="{% url 'login' %}" method="post" class="login-form" id="login-form">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+              <label for="username">Username or Email</label>
+              <input type="text" name="username" id="username" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+            <div class="form-check mb-3">
+              <input type="checkbox" name="remember" id="remember" class="form-check-input">
+              <label for="remember" class="form-check-label">Remember me</label>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+          </form>
+
+          <script>
+            // Add event listener to log form submission and ensure it works
+            document.addEventListener('DOMContentLoaded', function() {
+              document.getElementById('login-form').addEventListener('submit', function(e) {
+                console.log('Form submitted');
+                // Form will submit normally
+              });
+            });
+          </script>
+
+          <div class="text-center mt-3">
+            <a href="#" class="forgot-password">Forgot your password?</a>
+          </div>
+
+          <div class="text-center mt-4">
+            <p>Don't have an account? <a href="{% url 'register' %}" class="register-link">Register now</a></p>
+          </div>
+
+          <div class="social-login text-center mt-4">
+            <p>Or login with:</p>
+            <div class="social-buttons">
+              <a href="#" class="btn btn-outline-primary me-2"><i class="bi bi-google"></i> Google</a>
+              <a href="#" class="btn btn-outline-primary"><i class="bi bi-facebook"></i> Facebook</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /Login Section -->
+
+<style>
+  .login-page {
+    background-color: #f8f9fa;
+  }
+
+  .login-form-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .login-form label {
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  .btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    padding: 10px;
+  }
+
+  .btn-primary:hover {
+    background-color: color-mix(in srgb, var(--accent-color), transparent 15%);
+    border-color: color-mix(in srgb, var(--accent-color), transparent 15%);
+  }
+
+  .forgot-password, .register-link {
+    color: var(--accent-color);
+    text-decoration: none;
+  }
+
+  .forgot-password:hover, .register-link:hover {
+    text-decoration: underline;
+  }
+
+  .social-buttons {
+    margin-top: 15px;
+  }
+
+  .social-buttons .btn {
+    margin-bottom: 10px;
+  }
+</style>
+{% endblock %}

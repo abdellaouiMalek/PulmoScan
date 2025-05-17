@@ -1,0 +1,331 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Medical Dashboard{% endblock %}
+
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header Section -->
+<section id="dashboard-header" class="dashboard-header section-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2>Welcome, Dr. {{ user.first_name|default:user.username }}</h2>
+            <p class="text-muted">{{ now|date:"l, F j, Y" }}</p>
+          </div>
+          <div>
+            <a href="{% url 'appointment' %}" class="btn btn-primary"><i class="bi bi-calendar-plus me-2"></i>New Appointment</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Dashboard Stats Section -->
+<section id="dashboard-stats" class="dashboard-stats section">
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item d-flex align-items-center w-100 h-100">
+          <i class="fas fa-user-injured flex-shrink-0"></i>
+          <div>
+            <span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Patients Today</p>
+          </div>
+        </div>
+      </div><!-- End Stats Item -->
+
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item d-flex align-items-center w-100 h-100">
+          <i class="fas fa-lungs flex-shrink-0"></i>
+          <div>
+            <span data-purecounter-start="0" data-purecounter-end="8" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Pending Scans</p>
+          </div>
+        </div>
+      </div><!-- End Stats Item -->
+
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item d-flex align-items-center w-100 h-100">
+          <i class="fas fa-file-medical-alt flex-shrink-0"></i>
+          <div>
+            <span data-purecounter-start="0" data-purecounter-end="5" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Reports Due</p>
+          </div>
+        </div>
+      </div><!-- End Stats Item -->
+
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item d-flex align-items-center w-100 h-100">
+          <i class="fas fa-calendar-check flex-shrink-0"></i>
+          <div>
+            <span data-purecounter-start="0" data-purecounter-end="3" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Upcoming Appointments</p>
+          </div>
+        </div>
+      </div><!-- End Stats Item -->
+    </div>
+  </div>
+</section>
+
+<!-- Dashboard Main Content -->
+<section id="dashboard-content" class="dashboard-content section">
+  <div class="container">
+    <div class="row">
+      <!-- Left Column - Patient Information -->
+      <div class="col-lg-8">
+        <!-- Recent Patients Card -->
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Recent Patients</h5>
+            <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Patient ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Last Visit</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>PT-1001</td>
+                    <td>Ahmed Ben Ali</td>
+                    <td>58</td>
+                    <td>2024-10-15</td>
+                    <td><span class="badge bg-warning">Follow-up</span></td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
+                        <a href="#" class="btn btn-outline-success"><i class="bi bi-file-earmark-medical"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>PT-1002</td>
+                    <td>Fatima Mansour</td>
+                    <td>62</td>
+                    <td>2024-10-14</td>
+                    <td><span class="badge bg-success">Stable</span></td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
+                        <a href="#" class="btn btn-outline-success"><i class="bi bi-file-earmark-medical"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>PT-1003</td>
+                    <td>Mohamed Karim</td>
+                    <td>45</td>
+                    <td>2024-10-12</td>
+                    <td><span class="badge bg-danger">Critical</span></td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
+                        <a href="#" class="btn btn-outline-success"><i class="bi bi-file-earmark-medical"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>PT-1004</td>
+                    <td>Leila Trabelsi</td>
+                    <td>51</td>
+                    <td>2024-10-10</td>
+                    <td><span class="badge bg-info">New Patient</span></td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
+                        <a href="#" class="btn btn-outline-success"><i class="bi bi-file-earmark-medical"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Scans Card -->
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Recent Scans</h5>
+            <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="scan-item p-3 border rounded">
+                  <div class="d-flex justify-content-between mb-2">
+                    <h6 class="mb-0">Ahmed Ben Ali</h6>
+                    <span class="badge bg-primary">CT Scan</span>
+                  </div>
+                  <p class="text-muted small mb-2">Scan ID: SC-2024-1001</p>
+                  <p class="text-muted small mb-2">Date: 2024-10-15</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-warning">Pending Analysis</span>
+                    <a href="#" class="btn btn-sm btn-primary">View Scan</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="scan-item p-3 border rounded">
+                  <div class="d-flex justify-content-between mb-2">
+                    <h6 class="mb-0">Fatima Mansour</h6>
+                    <span class="badge bg-primary">CT Scan</span>
+                  </div>
+                  <p class="text-muted small mb-2">Scan ID: SC-2024-1002</p>
+                  <p class="text-muted small mb-2">Date: 2024-10-14</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-success">Analyzed</span>
+                    <a href="#" class="btn btn-sm btn-primary">View Results</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="scan-item p-3 border rounded">
+                  <div class="d-flex justify-content-between mb-2">
+                    <h6 class="mb-0">Mohamed Karim</h6>
+                    <span class="badge bg-primary">CT Scan</span>
+                  </div>
+                  <p class="text-muted small mb-2">Scan ID: SC-2024-1003</p>
+                  <p class="text-muted small mb-2">Date: 2024-10-12</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-danger">Urgent Review</span>
+                    <a href="#" class="btn btn-sm btn-primary">View Scan</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="scan-item p-3 border rounded">
+                  <div class="d-flex justify-content-between mb-2">
+                    <h6 class="mb-0">Leila Trabelsi</h6>
+                    <span class="badge bg-primary">CT Scan</span>
+                  </div>
+                  <p class="text-muted small mb-2">Scan ID: SC-2024-1004</p>
+                  <p class="text-muted small mb-2">Date: 2024-10-10</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-info">New Scan</span>
+                    <a href="#" class="btn btn-sm btn-primary">View Scan</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Quick Actions and Analytics -->
+      <div class="col-lg-4">
+        <!-- Quick Actions Card -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Quick Actions</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-grid gap-2">
+              <a href="#" class="btn btn-primary"><i class="bi bi-upload me-2"></i>Upload New Scan</a>
+              <a href="#" class="btn btn-outline-primary"><i class="bi bi-search me-2"></i>Analyze Scan</a>
+              <a href="#" class="btn btn-outline-primary"><i class="bi bi-file-earmark-text me-2"></i>Create Report</a>
+              <a href="#" class="btn btn-outline-primary"><i class="bi bi-person-plus me-2"></i>Add New Patient</a>
+              <a href="#" class="btn btn-outline-primary"><i class="bi bi-calendar-event me-2"></i>Schedule Appointment</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analytics Summary Card -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Analytics Summary</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <h6 class="mb-2">Scan Analysis Accuracy</h6>
+              <div class="progress">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">95%</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <h6 class="mb-2">Patient Recovery Rate</h6>
+              <div class="progress">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 82%;" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100">82%</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <h6 class="mb-2">Early Detection Rate</h6>
+              <div class="progress">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 78%;" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100">78%</div>
+              </div>
+            </div>
+            <div class="text-center mt-4">
+              <a href="#" class="btn btn-sm btn-outline-primary">View Detailed Analytics</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar Card -->
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Upcoming Schedule</h5>
+            <a href="#" class="btn btn-sm btn-outline-primary">Full Calendar</a>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item px-0">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-0">Patient Consultation</h6>
+                    <small class="text-muted">Ahmed Ben Ali</small>
+                  </div>
+                  <div class="text-end">
+                    <span class="badge bg-primary">Today</span>
+                    <small class="d-block text-muted">14:30</small>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item px-0">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-0">Team Meeting</h6>
+                    <small class="text-muted">Oncology Department</small>
+                  </div>
+                  <div class="text-end">
+                    <span class="badge bg-primary">Today</span>
+                    <small class="d-block text-muted">16:00</small>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item px-0">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-0">Follow-up Appointment</h6>
+                    <small class="text-muted">Fatima Mansour</small>
+                  </div>
+                  <div class="text-end">
+                    <span class="badge bg-info">Tomorrow</span>
+                    <small class="d-block text-muted">10:15</small>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+{% endblock %}

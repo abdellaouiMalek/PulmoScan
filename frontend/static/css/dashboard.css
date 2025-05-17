@@ -1,0 +1,234 @@
+/**
+* PulmoScan Dashboard Styles
+* Extends the main Medicio theme with dashboard-specific styles
+*/
+
+/* Dashboard Header */
+.dashboard-header {
+  padding: 30px 0;
+  background-color: rgba(63, 187, 192, 0.05);
+  margin-bottom: 20px;
+}
+
+.dashboard-header h2 {
+  color: var(--heading-color);
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* Dashboard Stats */
+.dashboard-stats {
+  padding-top: 20px;
+  padding-bottom: 30px;
+}
+
+.stats-item {
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.stats-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.stats-item i {
+  font-size: 36px;
+  color: var(--accent-color);
+  margin-right: 20px;
+}
+
+.stats-item span {
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--heading-color);
+  display: block;
+  line-height: 1;
+}
+
+.stats-item p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--default-color);
+}
+
+/* Dashboard Content */
+.dashboard-content {
+  padding: 30px 0 60px;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 15px 20px;
+}
+
+.card-header h5 {
+  margin-bottom: 0;
+  color: var(--heading-color);
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Patient Table */
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  font-weight: 600;
+  color: var(--heading-color);
+  border-top: none;
+  padding: 12px 15px;
+}
+
+.table td {
+  vertical-align: middle;
+  padding: 12px 15px;
+}
+
+.table tr:hover {
+  background-color: rgba(63, 187, 192, 0.05);
+}
+
+/* Scan Items */
+.scan-item {
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.scan-item:hover {
+  box-shadow: 0 0 15px rgba(63, 187, 192, 0.1);
+  border-color: var(--accent-color) !important;
+}
+
+.scan-item h6 {
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+/* Quick Actions */
+.btn-primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.btn-primary:hover {
+  background-color: color-mix(in srgb, var(--accent-color), black 10%);
+  border-color: color-mix(in srgb, var(--accent-color), black 10%);
+}
+
+.btn-outline-primary {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* Progress Bars */
+.progress {
+  height: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  border-radius: 5px;
+}
+
+/* Calendar/Schedule */
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 15px 0;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.list-group-item h6 {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .stats-item {
+    margin-bottom: 20px;
+  }
+  
+  .card {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    text-align: center;
+  }
+  
+  .dashboard-header .btn {
+    margin-top: 15px;
+  }
+  
+  .stats-item i {
+    font-size: 30px;
+    margin-right: 15px;
+  }
+  
+  .stats-item span {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-header h2 {
+    font-size: 24px;
+  }
+  
+  .stats-item {
+    padding: 15px;
+  }
+  
+  .stats-item i {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+  
+  .stats-item span {
+    font-size: 24px;
+  }
+  
+  .card-header {
+    padding: 12px 15px;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+}

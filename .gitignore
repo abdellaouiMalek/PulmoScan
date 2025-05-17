@@ -15,10 +15,7 @@ env/
 *.png
 
 # Ignore whole folders
-frontend/
-main/
-django/
-init_front/
+
 evaluationScript/
 
 # Ignore everything in the folder

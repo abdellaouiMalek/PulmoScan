@@ -1,0 +1,657 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Advanced Lung Cancer Detection{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section id="hero" class="hero section">
+  <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+    <div class="carousel-item active">
+      <img src="{% static 'img/hero-carousel/hero-carousel-1.jpg' %}" alt="">
+      <div class="container">
+        <h2>Welcome to PulmoScan</h2>
+        <p>Advanced lung cancer detection and classification system using state-of-the-art AI technology.</p>
+        <a href="#about" class="btn-get-started">Learn More</a>
+      </div>
+    </div><!-- End Carousel Item -->
+
+    <div class="carousel-item">
+      <img src="{% static 'img/hero-carousel/hero-carousel-2.jpg' %}" alt="">
+      <div class="container">
+        <h2>Early Detection Saves Lives</h2>
+        <p>Our AI-powered system can detect early signs of lung cancer with high accuracy, improving patient outcomes.</p>
+        <a href="#about" class="btn-get-started">Learn More</a>
+      </div>
+    </div><!-- End Carousel Item -->
+
+    <div class="carousel-item">
+      <img src="{% static 'img/hero-carousel/hero-carousel-3.jpg' %}" alt="">
+      <div class="container">
+        <h2>Advanced Medical Technology</h2>
+        <p>Using deep learning algorithms to analyze CT scans and provide accurate cancer classification.</p>
+        <a href="#about" class="btn-get-started">Learn More</a>
+      </div>
+    </div><!-- End Carousel Item -->
+
+    <a class="carousel-control-prev" href="#hero-carousel" role="button" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+    </a>
+
+    <a class="carousel-control-next" href="#hero-carousel" role="button" data-bs-slide="next">
+      <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+    </a>
+
+    <ol class="carousel-indicators"></ol>
+  </div>
+</section><!-- /Hero Section -->
+
+<!-- Featured Services Section -->
+<section id="featured-services" class="featured-services section">
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-item position-relative">
+          <div class="icon"><i class="fas fa-lungs icon"></i></div>
+          <h4><a href="" class="stretched-link">Cancer Detection</a></h4>
+          <p>Early detection of lung cancer using advanced AI algorithms</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-item position-relative">
+          <div class="icon"><i class="fas fa-microscope icon"></i></div>
+          <h4><a href="" class="stretched-link">Cancer Classification</a></h4>
+          <p>Accurate classification of cancer</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-item position-relative">
+          <div class="icon"><i class="fas fa-brain icon"></i></div>
+          <h4><a href="" class="stretched-link">Cancer Stage</a></h4>
+          <p>Deep learning algorithms for cancer stage analysis</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
+        <div class="service-item position-relative">
+          <div class="icon"><i class="fas fa-user-md icon"></i></div>
+          <h4><a href="" class="stretched-link">Cancer Type</a></h4>
+          <p>Connect with medical experts for personalized care</p>
+        </div>
+      </div><!-- End Service Item -->
+    </div>
+  </div>
+</section><!-- /Featured Services Section -->
+
+<!-- About Section -->
+<section id="about" class="about section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>About Us</h2>
+    <p>Pioneering AI-powered lung cancer detection and classification</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-6 position-relative align-self-start" data-aos="fade-up" data-aos-delay="100">
+        <img src="{% static 'img/about.jpg' %}" class="img-fluid" alt="">
+        <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
+      </div>
+      <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="200">
+        <h3>PulmoScan: Advanced Lung Cancer Detection System</h3>
+        <p class="fst-italic">
+          Our mission is to improve early detection and accurate classification of lung cancer using cutting-edge AI technology.
+        </p>
+        <ul>
+          <li><i class="bi bi-check2-all"></i> <span>Early detection of lung nodules using deep learning algorithms.</span></li>
+          <li><i class="bi bi-check2-all"></i> <span>Accurate classification of cancer types and stages.</span></li>
+          <li><i class="bi bi-check2-all"></i> <span>Integration with hospital systems for seamless workflow.</span></li>
+        </ul>
+        <p>
+          PulmoScan combines advanced computer vision with medical expertise to provide doctors with powerful tools for diagnosing and treating lung cancer. Our system analyzes CT scans to detect and classify lung nodules with high accuracy.
+        </p>
+      </div>
+    </div>
+  </div>
+</section><!-- /About Section -->
+
+<!-- Stats Section -->
+<section id="stats" class="stats section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item d-flex align-items-center w-100 h-100">
+          <i class="fas fa-user-md flex-shrink-0"></i>
+          <div>
+            <span data-purecounter-start="0" data-purecounter-end="25" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Medical Experts</p>
+          </div>
+        </div>
+      </div><!-- End Stats Item -->
+
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item d-flex align-items-center w-100 h-100">
+          <i class="fas fa-hospital flex-shrink-0"></i>
+          <div>
+            <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Partner Hospitals</p>
+          </div>
+        </div>
+      </div><!-- End Stats Item -->
+
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item d-flex align-items-center w-100 h-100">
+          <i class="fas fa-flask flex-shrink-0"></i>
+          <div>
+            <span data-purecounter-start="0" data-purecounter-end="95" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Accuracy Rate</p>
+          </div>
+        </div>
+      </div><!-- End Stats Item -->
+
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item d-flex align-items-center w-100 h-100">
+          <i class="fas fa-award flex-shrink-0"></i>
+          <div>
+            <span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Research Awards</p>
+          </div>
+        </div>
+      </div><!-- End Stats Item -->
+    </div>
+  </div>
+</section><!-- /Stats Section -->
+
+<!-- Call To Action Section -->
+<section id="call-to-action" class="call-to-action section accent-background">
+  <div class="container">
+    <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+      <div class="col-xl-10">
+        <div class="text-center">
+          <h3>Ready to try PulmoScan?</h3>
+          <p>Contact us today to learn how our AI-powered lung cancer detection system can help your medical practice improve patient outcomes.</p>
+          <a class="cta-btn" href="{% url 'contact' %}">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /Call To Action Section -->
+
+<!-- Features Section -->
+<section id="features" class="features section">
+  <div class="container">
+    <div class="row justify-content-around gy-4">
+      <div class="features-image col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <img src="{% static 'img/features.jpg' %}" alt="">
+      </div>
+
+      <div class="col-lg-5 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+        <h3>Advanced AI Technology for Lung Cancer Detection</h3>
+        <p>Our system uses state-of-the-art deep learning algorithms to analyze CT scans and detect early signs of lung cancer with high accuracy.</p>
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="300">
+          <i class="fas fa-lungs flex-shrink-0"></i>
+          <div>
+            <h4><a href="" class="stretched-link">Early Detection</a></h4>
+            <p>Identify early-stage lung nodules that might be missed in conventional screening methods</p>
+          </div>
+        </div><!-- End Icon Box -->
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="400">
+          <i class="fas fa-microscope flex-shrink-0"></i>
+          <div>
+            <h4><a href="" class="stretched-link">Accurate Classification</a></h4>
+            <p>Classify cancer types and stages with high precision to guide treatment decisions</p>
+          </div>
+        </div><!-- End Icon Box -->
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="500">
+          <i class="fas fa-brain flex-shrink-0"></i>
+          <div>
+            <h4><a href="" class="stretched-link">AI-Powered Analysis</a></h4>
+            <p>Continuous learning algorithms that improve over time with more data</p>
+          </div>
+        </div><!-- End Icon Box -->
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="600">
+          <i class="fas fa-hospital-user flex-shrink-0"></i>
+          <div>
+            <h4><a href="" class="stretched-link">Seamless Integration</a></h4>
+            <p>Easily integrates with existing hospital systems and workflows</p>
+          </div>
+        </div><!-- End Icon Box -->
+      </div>
+    </div>
+  </div>
+</section><!-- /Features Section -->
+
+<!-- Services Section -->
+<section id="services" class="services section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Our Services</h2>
+    <p>Comprehensive lung cancer detection and classification services</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-lungs"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Lung Nodule Detection</h3>
+          </a>
+          <p>Early detection of lung nodules using our advanced AI algorithms, helping to identify potential cancer at its earliest stages.</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-microscope"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Cancer Classification</h3>
+          </a>
+          <p>Accurate classification of cancer types and stages to guide treatment decisions and improve patient outcomes.</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-hospital-user"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Medical Consultation</h3>
+          </a>
+          <p>Connect with our network of medical experts for personalized consultation and treatment recommendations.</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>AI-Powered Analysis</h3>
+          </a>
+          <p>Deep learning algorithms that analyze medical images with high precision and continuously improve over time.</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-database"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Data Management</h3>
+          </a>
+          <p>Secure storage and management of medical images and patient data with strict privacy controls.</p>
+        </div>
+      </div><!-- End Service Item -->
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="fas fa-laptop-medical"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>System Integration</h3>
+          </a>
+          <p>Seamless integration with existing hospital systems and workflows for efficient operation.</p>
+        </div>
+      </div><!-- End Service Item -->
+    </div>
+  </div>
+</section><!-- /Services Section -->
+
+<!-- Appointment Section -->
+<section id="appointment" class="appointment section light-background">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Request a Consultation</h2>
+    <p>Schedule a consultation with our medical experts to learn more about our services</p>
+  </div><!-- End Section Title -->
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <form action="#" method="post" role="form" class="php-email-form">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+        </div>
+        <div class="col-md-4 form-group mt-3 mt-md-0">
+          <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+        </div>
+        <div class="col-md-4 form-group mt-3 mt-md-0">
+          <input type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" required>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 form-group mt-3">
+          <input type="datetime-local" name="date" class="form-control datepicker" id="date" placeholder="Appointment Date" required>
+        </div>
+        <div class="col-md-4 form-group mt-3">
+          <select name="service" id="service" class="form-select" required>
+            <option value="">Select Service</option>
+            <option value="Lung Nodule Detection">Lung Nodule Detection</option>
+            <option value="Cancer Classification">Cancer Classification</option>
+            <option value="Medical Consultation">Medical Consultation</option>
+            <option value="System Integration">System Integration</option>
+          </select>
+        </div>
+        <div class="col-md-4 form-group mt-3">
+          <select name="doctor" id="doctor" class="form-select" required>
+            <option value="">Select Doctor (Optional)</option>
+            <option value="Dr. Smith">Dr. Smith - Oncology</option>
+            <option value="Dr. Johnson">Dr. Johnson - Radiology</option>
+            <option value="Dr. Williams">Dr. Williams - Pulmonology</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)"></textarea>
+      </div>
+      <div class="mt-3">
+        <div class="loading">Loading</div>
+        <div class="error-message"></div>
+        <div class="sent-message">Your appointment request has been sent successfully. Thank you!</div>
+        <div class="text-center"><button type="submit">Request Consultation</button></div>
+      </div>
+    </form>
+  </div>
+</section><!-- /Appointment Section -->
+
+<!-- Doctors Section -->
+<section id="doctors" class="doctors section light-background">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Our Medical Experts</h2>
+    <p>Experienced specialists in oncology, radiology, and pulmonology</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+        <div class="team-member">
+          <div class="member-img">
+            <img src="{% static 'img/doctors/doctors-1.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Dr. Robert Smith</h4>
+            <span>Chief Oncologist</span>
+          </div>
+        </div>
+      </div><!-- End Team Member -->
+
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+        <div class="team-member">
+          <div class="member-img">
+            <img src="{% static 'img/doctors/doctors-2.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Dr. Sarah Johnson</h4>
+            <span>Radiologist</span>
+          </div>
+        </div>
+      </div><!-- End Team Member -->
+
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
+        <div class="team-member">
+          <div class="member-img">
+            <img src="{% static 'img/doctors/doctors-3.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Dr. Michael Williams</h4>
+            <span>Pulmonologist</span>
+          </div>
+        </div>
+      </div><!-- End Team Member -->
+
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+        <div class="team-member">
+          <div class="member-img">
+            <img src="{% static 'img/doctors/doctors-4.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Dr. Amanda Davis</h4>
+            <span>AI Research Lead</span>
+          </div>
+        </div>
+      </div><!-- End Team Member -->
+    </div>
+  </div>
+</section><!-- /Doctors Section -->
+
+<!-- Testimonials Section -->
+<section id="testimonials" class="testimonials section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Testimonials</h2>
+    <p>What medical professionals are saying about PulmoScan</p>
+  </div><!-- End Section Title -->
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="swiper init-swiper" data-speed="600" data-delay="5000" data-breakpoints="{ &quot;320&quot;: { &quot;slidesPerView&quot;: 1, &quot;spaceBetween&quot;: 40 }, &quot;1200&quot;: { &quot;slidesPerView&quot;: 3, &quot;spaceBetween&quot;: 40 } }">
+      <script type="application/json" class="swiper-config">
+        {
+          "loop": true,
+          "speed": 600,
+          "autoplay": {
+            "delay": 5000
+          },
+          "slidesPerView": "auto",
+          "pagination": {
+            "el": ".swiper-pagination",
+            "type": "bullets",
+            "clickable": true
+          },
+          "breakpoints": {
+            "320": {
+              "slidesPerView": 1,
+              "spaceBetween": 40
+            },
+            "1200": {
+              "slidesPerView": 3,
+              "spaceBetween": 20
+            }
+          }
+        }
+      </script>
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="testimonial-item">
+            <p>
+              <i class="bi bi-quote quote-icon-left"></i>
+              <span>PulmoScan has revolutionized our lung cancer screening process. The AI-powered detection system has significantly improved our early detection rates and saved countless lives.</span>
+              <i class="bi bi-quote quote-icon-right"></i>
+            </p>
+            <img src="{% static 'img/testimonials/testimonials-1.jpg' %}" class="testimonial-img" alt="">
+            <h3>Dr. James Wilson</h3>
+            <h4>Chief of Oncology, Memorial Hospital</h4>
+          </div>
+        </div><!-- End testimonial item -->
+
+        <div class="swiper-slide">
+          <div class="testimonial-item">
+            <p>
+              <i class="bi bi-quote quote-icon-left"></i>
+              <span>The accuracy of PulmoScan's classification system is remarkable. It has helped us make more informed treatment decisions and improved patient outcomes significantly.</span>
+              <i class="bi bi-quote quote-icon-right"></i>
+            </p>
+            <img src="{% static 'img/testimonials/testimonials-2.jpg' %}" class="testimonial-img" alt="">
+            <h3>Dr. Emily Chen</h3>
+            <h4>Radiologist, University Medical Center</h4>
+          </div>
+        </div><!-- End testimonial item -->
+
+        <div class="swiper-slide">
+          <div class="testimonial-item">
+            <p>
+              <i class="bi bi-quote quote-icon-left"></i>
+              <span>Integrating PulmoScan into our workflow was seamless. The system works alongside our existing tools and has enhanced our diagnostic capabilities tremendously.</span>
+              <i class="bi bi-quote quote-icon-right"></i>
+            </p>
+            <img src="{% static 'img/testimonials/testimonials-3.jpg' %}" class="testimonial-img" alt="">
+            <h3>Dr. Thomas Brown</h3>
+            <h4>Director of Radiology, City General Hospital</h4>
+          </div>
+        </div><!-- End testimonial item -->
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section><!-- /Testimonials Section -->
+
+<!-- FAQ Section -->
+<section id="faq" class="faq section light-background">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Frequently Asked Questions</h2>
+    <p>Common questions about PulmoScan and our services</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10" data-aos="fade-up" data-aos-delay="100">
+        <div class="faq-container">
+          <div class="faq-item">
+            <h3>What is PulmoScan?</h3>
+            <div class="faq-content">
+              <p>PulmoScan is an AI-powered system for lung cancer detection and classification. It analyzes CT scans to identify lung nodules and classify them according to cancer type and stage.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item">
+            <h3>How accurate is PulmoScan?</h3>
+            <div class="faq-content">
+              <p>PulmoScan has achieved a 95% accuracy rate in clinical trials, significantly higher than conventional screening methods. The system continues to improve as it learns from more data.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item">
+            <h3>How does PulmoScan integrate with existing hospital systems?</h3>
+            <div class="faq-content">
+              <p>PulmoScan is designed to integrate seamlessly with existing PACS (Picture Archiving and Communication System) and EHR (Electronic Health Record) systems. Our team provides full support for integration and customization.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item">
+            <h3>Is patient data secure with PulmoScan?</h3>
+            <div class="faq-content">
+              <p>Yes, PulmoScan adheres to strict data security protocols and is fully HIPAA compliant. All patient data is encrypted and stored securely.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+
+          <div class="faq-item">
+            <h3>How can our hospital implement PulmoScan?</h3>
+            <div class="faq-content">
+              <p>Implementation is straightforward. Contact us to schedule a consultation, and our team will guide you through the process, from initial assessment to full deployment and training.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /FAQ Section -->
+
+<!-- Contact Section -->
+<section id="contact" class="contact section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Contact Us</h2>
+    <p>Get in touch with our team for more information about PulmoScan</p>
+  </div><!-- End Section Title -->
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-lg-6">
+        <div class="row gy-4">
+          <div class="col-lg-12">
+            <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
+              <i class="bi bi-geo-alt"></i>
+              <h3>Our Address</h3>
+              <p>A108 Adam Street, New York, NY 535022</p>
+            </div>
+          </div><!-- End Info Item -->
+
+          <div class="col-md-6">
+            <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
+              <i class="bi bi-telephone"></i>
+              <h3>Call Us</h3>
+              <p>+1 5589 55488 55</p>
+            </div>
+          </div><!-- End Info Item -->
+
+          <div class="col-md-6">
+            <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
+              <i class="bi bi-envelope"></i>
+              <h3>Email Us</h3>
+              <p>info@pulmoscan.com</p>
+            </div>
+          </div><!-- End Info Item -->
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <form action="{% url 'contact' %}" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="500">
+          {% csrf_token %}
+          <div class="row gy-4">
+            <div class="col-md-6">
+              <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+            </div>
+            <div class="col-md-6">
+              <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+            </div>
+            <div class="col-md-12">
+              <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+            </div>
+            <div class="col-md-12">
+              <textarea class="form-control" name="message" rows="4" placeholder="Message" required></textarea>
+            </div>
+            <div class="col-md-12 text-center">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your message has been sent. Thank you!</div>
+              <button type="submit">Send Message</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section><!-- /Contact Section -->
+{% endblock %}

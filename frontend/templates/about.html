@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About PulmoScan{% endblock %}
+
+{% block content %}
+<!-- About Section -->
+<section id="about" class="about section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>About PulmoScan</h2>
+    <p>Pioneering AI-powered lung cancer detection and classification</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-6 position-relative align-self-start" data-aos="fade-up" data-aos-delay="100">
+        <img src="{% static 'img/about.jpg' %}" class="img-fluid" alt="">
+        <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
+      </div>
+      <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="200">
+        <h3>Our Mission</h3>
+        <p class="fst-italic">
+          To improve early detection and accurate classification of lung cancer using cutting-edge AI technology.
+        </p>
+        <ul>
+          <li><i class="bi bi-check2-all"></i> <span>Early detection of lung nodules using deep learning algorithms.</span></li>
+          <li><i class="bi bi-check2-all"></i> <span>Accurate classification of cancer types and stages.</span></li>
+          <li><i class="bi bi-check2-all"></i> <span>Integration with hospital systems for seamless workflow.</span></li>
+        </ul>
+        <p>
+          PulmoScan combines advanced computer vision with medical expertise to provide doctors with powerful tools for diagnosing and treating lung cancer. Our system analyzes CT scans to detect and classify lung nodules with high accuracy.
+        </p>
+      </div>
+    </div>
+  </div>
+</section><!-- /About Section -->
+
+<!-- Features Section -->
+<section id="features" class="features section">
+  <div class="container">
+    <div class="row justify-content-around gy-4">
+      <div class="features-image col-lg-6" data-aos="fade-up" data-aos-delay="100"><img src="{% static 'img/features.jpg' %}" alt=""></div>
+
+      <div class="col-lg-5 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+        <h3>Advanced Technology for Better Healthcare</h3>
+        <p>Our AI-powered system uses state-of-the-art deep learning algorithms to analyze medical images and provide accurate diagnosis.</p>
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="300">
+          <i class="fa-solid fa-brain flex-shrink-0"></i>
+          <div>
+            <h4><a href="" class="stretched-link">Deep Learning</a></h4>
+            <p>Using advanced neural networks trained on thousands of medical images to detect patterns invisible to the human eye.</p>
+          </div>
+        </div><!-- End Icon Box -->
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="400">
+          <i class="fa-solid fa-lungs flex-shrink-0"></i>
+          <div>
+            <h4><a href="" class="stretched-link">Lung Nodule Detection</a></h4>
+            <p>Specialized algorithms for detecting small lung nodules that might indicate early-stage cancer.</p>
+          </div>
+        </div><!-- End Icon Box -->
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="500">
+          <i class="fa-solid fa-chart-line flex-shrink-0"></i>
+          <div>
+            <h4><a href="" class="stretched-link">Accurate Classification</a></h4>
+            <p>Precise classification of cancer types and stages to guide treatment decisions.</p>
+          </div>
+        </div><!-- End Icon Box -->
+
+        <div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="600">
+          <i class="fa-solid fa-hospital-user flex-shrink-0"></i>
+          <div>
+            <h4><a href="" class="stretched-link">Patient-Centered</a></h4>
+            <p>Designed with patients in mind, providing clear results and supporting better communication between doctors and patients.</p>
+          </div>
+        </div><!-- End Icon Box -->
+      </div>
+    </div>
+  </div>
+</section><!-- /Features Section -->
+
+<!-- Team Section -->
+<section id="team" class="doctors section light-background">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Our Team</h2>
+    <p>Meet the experts behind PulmoScan</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+        <div class="team-member">
+          <div class="member-img">
+            <img src="{% static 'img/doctors/doctors-1.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Dr. John Smith</h4>
+            <span>Chief Medical Officer</span>
+          </div>
+        </div>
+      </div><!-- End Team Member -->
+
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+        <div class="team-member">
+          <div class="member-img">
+            <img src="{% static 'img/doctors/doctors-2.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Dr. Sarah Johnson</h4>
+            <span>Lead Radiologist</span>
+          </div>
+        </div>
+      </div><!-- End Team Member -->
+
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
+        <div class="team-member">
+          <div class="member-img">
+            <img src="{% static 'img/doctors/doctors-3.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Dr. William Anderson</h4>
+            <span>AI Research Lead</span>
+          </div>
+        </div>
+      </div><!-- End Team Member -->
+
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+        <div class="team-member">
+          <div class="member-img">
+            <img src="{% static 'img/doctors/doctors-4.jpg' %}" class="img-fluid" alt="">
+            <div class="social">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Dr. Amanda Jepson</h4>
+            <span>Oncology Specialist</span>
+          </div>
+        </div>
+      </div><!-- End Team Member -->
+    </div>
+  </div>
+</section><!-- /Team Section -->
+{% endblock %}

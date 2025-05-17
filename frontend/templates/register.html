@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Register{% endblock %}
+
+{% block body_class %}register-page{% endblock %}
+
+{% block content %}
+<!-- Register Section -->
+<section id="register" class="register section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8">
+        <div class="register-form-container" data-aos="fade-up">
+          <h2 class="text-center mb-4">Create an Account</h2>
+
+          {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <form action="{% url 'register' %}" method="post" class="register-form" id="register-form">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 form-group mb-3">
+                <label for="first_name">First Name</label>
+                <input type="text" name="first_name" id="first_name" class="form-control" required>
+              </div>
+              <div class="col-md-6 form-group mb-3">
+                <label for="last_name">Last Name</label>
+                <input type="text" name="last_name" id="last_name" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="email">Email Address</label>
+              <input type="email" name="email" id="email" class="form-control" required>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="username">Username</label>
+              <input type="text" name="username" id="username" class="form-control" required>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="password1">Password</label>
+              <input type="password" name="password1" id="password1" class="form-control" required>
+              <small class="form-text text-muted">
+                Your password must be at least 8 characters long and contain letters, numbers, and special characters.
+              </small>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="password2">Confirm Password</label>
+              <input type="password" name="password2" id="password2" class="form-control" required>
+            </div>
+
+            <div class="form-check mb-3">
+              <input type="checkbox" name="terms" id="terms" class="form-check-input" required>
+              <label for="terms" class="form-check-label">
+                I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="privacy-link">Privacy Policy</a>
+              </label>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+          </form>
+
+          <script>
+            // Add event listener to log form submission and ensure it works
+            document.addEventListener('DOMContentLoaded', function() {
+              document.getElementById('register-form').addEventListener('submit', function(e) {
+                console.log('Register form submitted');
+                // Form will submit normally
+              });
+            });
+          </script>
+
+          <div class="text-center mt-4">
+            <p>Already have an account? <a href="{% url 'login' %}" class="login-link">Login</a></p>
+          </div>
+
+          <div class="social-register text-center mt-4">
+            <p>Or register with:</p>
+            <div class="social-buttons">
+              <a href="#" class="btn btn-outline-primary me-2"><i class="bi bi-google"></i> Google</a>
+              <a href="#" class="btn btn-outline-primary"><i class="bi bi-facebook"></i> Facebook</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /Register Section -->
+
+<style>
+  .register-page {
+    background-color: #f8f9fa;
+  }
+
+  .register-form-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .register-form label {
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  .btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    padding: 10px;
+  }
+
+  .btn-primary:hover {
+    background-color: color-mix(in srgb, var(--accent-color), transparent 15%);
+    border-color: color-mix(in srgb, var(--accent-color), transparent 15%);
+  }
+
+  .terms-link, .privacy-link, .login-link {
+    color: var(--accent-color);
+    text-decoration: none;
+  }
+
+  .terms-link:hover, .privacy-link:hover, .login-link:hover {
+    text-decoration: underline;
+  }
+
+  .social-buttons {
+    margin-top: 15px;
+  }
+
+  .social-buttons .btn {
+    margin-bottom: 10px;
+  }
+</style>
+{% endblock %}
