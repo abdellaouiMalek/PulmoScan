@@ -58,3 +58,7 @@ examp/
 
 # All pdf files
 *.pdf
+
+cancer_stage/*
+.venv/
+frontend/
