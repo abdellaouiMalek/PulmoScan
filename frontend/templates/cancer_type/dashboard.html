@@ -1,0 +1,194 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Cancer Type Analysis{% endblock %}
+
+{% block page_title %}Cancer Type Analysis{% endblock %}
+
+{% block dashboard_css %}
+<style>
+    .cancer-card {
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+    .cancer-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .cancer-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    .adenocarcinoma { color: #28a745; }
+    .squamous { color: #ffc107; }
+    .small-cell { color: #fd7e14; }
+    .normal { color: #3fbbc0; }
+
+    .svs-preview {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .model-info {
+        background-color: rgba(63, 187, 192, 0.1);
+        border-left: 4px solid #3fbbc0;
+        padding: 15px;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container py-4 fade-in">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-primary text-white">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="mb-3">Cancer Type Analysis</h2>
+                            <p class="lead mb-0">Upload SVS images to analyze and determine the type of lung cancer using our advanced deep learning model.</p>
+                        </div>
+                        <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
+                            <i class="fas fa-dna fa-5x text-white-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancer Types Information -->
+    <div class="row mb-4">
+        <div class="col-12 mb-4">
+            <h3 class="mb-3">Understanding Lung Cancer Types</h3>
+            <p>Lung cancer is classified into different types based on how the cells look under a microscope. Our AI model can help identify the type of lung cancer from SVS images.</p>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 cancer-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-circle cancer-icon adenocarcinoma"></i>
+                    <h4>Adenocarcinoma</h4>
+                    <p class="text-muted">Most common type of lung cancer, often found in the outer regions of the lung.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 cancer-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-square cancer-icon squamous"></i>
+                    <h4>Squamous Cell</h4>
+                    <p class="text-muted">Often linked to smoking and typically found in the central part of the lungs.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 cancer-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-dot-circle cancer-icon small-cell"></i>
+                    <h4>Small Cell</h4>
+                    <p class="text-muted">Aggressive type that spreads quickly, strongly associated with smoking.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 cancer-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-check-circle cancer-icon normal"></i>
+                    <h4>Normal Tissue</h4>
+                    <p class="text-muted">Healthy lung tissue with no signs of cancer cells.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Upload SVS Image</h5>
+                </div>
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-upload fa-4x text-primary mb-4"></i>
+                    <h4 class="mb-3">Analyze a New SVS Image</h4>
+                    <p class="mb-4">Upload an SVS image to analyze and determine the cancer type.</p>
+                    <a href="{% url 'cancer_type_upload' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-upload me-2"></i> Upload SVS Image
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">View Results</h5>
+                </div>
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-history fa-4x text-primary mb-4"></i>
+                    <h4 class="mb-3">Previous Analyses</h4>
+                    <p class="mb-4">View the history of your previous cancer type analyses and their results.</p>
+                    <a href="{% url 'cancer_type_results' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-list-alt me-2"></i> View Results History
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Information -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">About Our Model</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="model-info mb-4">
+                                <h4>ResNet-18 for Cancer Type Classification</h4>
+                                <p>Our model is a fine-tuned ResNet-18 architecture, specifically trained on SVS images to classify lung cancer types. The model analyzes the tissue patterns to make accurate predictions.</p>
+                            </div>
+
+                            <h5>Key Features:</h5>
+                            <ul>
+                                <li>Trained on a large dataset of annotated SVS images</li>
+                                <li>Achieves 92% accuracy in distinguishing between cancer types</li>
+                                <li>Processes high-resolution SVS images with patch-based approach</li>
+                                <li>Provides confidence scores for each prediction</li>
+                                <li>Optimized for clinical use with fast inference time</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-5 text-center">
+                            <div class="svs-preview mb-3 bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <div class="text-center p-3">
+                                    <i class="fas fa-microscope fa-3x text-muted mb-3"></i>
+                                    <p class="mb-0">SVS Image Example</p>
+                                </div>
+                            </div>
+                            <p class="text-muted small">Example of a processed SVS image</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block dashboard_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Cancer Type Dashboard loaded');
+    });
+</script>
+{% endblock %}

@@ -83,7 +83,6 @@ Nodules_Detector.ipynb
 *.pdf
 
 .venv/
-frontend/
 *.sqlite3
 
 # All csv files
@@ -108,6 +107,4 @@ cancer_type/.ipynb_checkpoints/
 cancer_type/balanced_images/
 cancer_type/processed_images/
 
-frontend/
-main/
 PulmoScan/

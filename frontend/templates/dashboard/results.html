@@ -1,0 +1,150 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}PulmoScan - Analysis History{% endblock %}
+
+{% block page_title %}Analysis History{% endblock %}
+
+{% block dashboard_content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-5 mb-4">
+            <i class="fas fa-list-alt me-2"></i> Analysis History
+        </h1>
+        <p class="lead">
+            View the complete history of analyses performed with PulmoScan.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                {% if predictions %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Image</th>
+                                <th>Date</th>
+                                <th>Result</th>
+                                <th>Probability</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prediction in predictions %}
+                            <tr>
+                                <td>
+                                    <img src="{{ prediction.scan_image.image.url }}" alt="Scan" class="img-thumbnail" style="max-width: 100px;">
+                                </td>
+                                <td>{{ prediction.created_at|date:"d/m/Y H:i" }}</td>
+                                <td>
+                                    {% if prediction.is_malignant %}
+                                    <span class="result-malignant">
+                                        <i class="fas fa-exclamation-triangle me-1"></i> Malignant
+                                    </span>
+                                    {% else %}
+                                    <span class="result-benign">
+                                        <i class="fas fa-check-circle me-1"></i> Benign
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ prediction.prediction|floatformat:4 }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary view-details"
+                                            data-image="{{ prediction.scan_image.image.url }}"
+                                            data-result="{{ prediction.is_malignant|yesno:'Malignant,Benign' }}"
+                                            data-probability="{{ prediction.prediction|floatformat:4 }}"
+                                            data-date="{{ prediction.created_at|date:'d/m/Y H:i' }}"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailsModal">
+                                        <i class="fas fa-eye"></i> Details
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> No analysis has been performed yet.
+                    <a href="{% url 'upload' %}" class="alert-link">Start an analysis</a>.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Analysis Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 text-center">
+                        <h6 class="mb-3">Scan Image</h6>
+                        <img id="modal-image" class="img-fluid img-thumbnail mb-3" style="max-height: 300px;">
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Analysis Results</h6>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Result:</th>
+                                    <td id="modal-result"></td>
+                                </tr>
+                                <tr>
+                                    <th>Probability:</th>
+                                    <td id="modal-probability"></td>
+                                </tr>
+                                <tr>
+                                    <th>Date:</th>
+                                    <td id="modal-date"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Download Report</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block dashboard_js %}
+<script>
+    $(document).ready(function() {
+        // Handle view details button
+        $('.view-details').on('click', function() {
+            const image = $(this).data('image');
+            const result = $(this).data('result');
+            const probability = $(this).data('probability');
+            const date = $(this).data('date');
+
+            // Set modal content
+            $('#modal-image').attr('src', image);
+            $('#modal-result').text(result);
+            $('#modal-probability').text(probability);
+            $('#modal-date').text(date);
+
+            // Set result color
+            if (result === 'Malignant') {
+                $('#modal-result').removeClass('result-benign').addClass('result-malignant');
+            } else {
+                $('#modal-result').removeClass('result-malignant').addClass('result-benign');
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Cancer Stage Analysis{% endblock %}
+
+{% block page_title %}Cancer Stage Analysis{% endblock %}
+
+{% block dashboard_css %}
+<style>
+    .stage-card {
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+    .stage-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .stage-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    .stage-1 { color: #28a745; }
+    .stage-2 { color: #ffc107; }
+    .stage-3 { color: #fd7e14; }
+    .stage-4 { color: #dc3545; }
+    
+    .ct-preview {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .model-info {
+        background-color: rgba(63, 187, 192, 0.1);
+        border-left: 4px solid #3fbbc0;
+        padding: 15px;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container py-4 fade-in">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-primary text-white">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="mb-3">Cancer Stage Analysis</h2>
+                            <p class="lead mb-0">Upload 3D CT scans to analyze and determine the stage of lung cancer using our advanced deep learning model.</p>
+                        </div>
+                        <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
+                            <i class="fas fa-lungs fa-5x text-white-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancer Stages Information -->
+    <div class="row mb-4">
+        <div class="col-12 mb-4">
+            <h3 class="mb-3">Understanding Lung Cancer Stages</h3>
+            <p>Lung cancer staging is crucial for determining the appropriate treatment and prognosis. Our AI model can help identify the stage based on CT scan analysis.</p>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 stage-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-circle stage-icon stage-1"></i>
+                    <h4>Stage I</h4>
+                    <p class="text-muted">Cancer is localized to the lung without lymph node involvement.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 stage-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-adjust stage-icon stage-2"></i>
+                    <h4>Stage II</h4>
+                    <p class="text-muted">Cancer has spread to nearby lymph nodes or invaded chest structures.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 stage-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-dot-circle stage-icon stage-3"></i>
+                    <h4>Stage III</h4>
+                    <p class="text-muted">Cancer has spread to lymph nodes or structures further from the original tumor.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 stage-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-radiation-alt stage-icon stage-4"></i>
+                    <h4>Stage IV</h4>
+                    <p class="text-muted">Cancer has spread to other parts of the body (metastasized).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Upload CT Scan</h5>
+                </div>
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-upload fa-4x text-primary mb-4"></i>
+                    <h4 class="mb-3">Analyze a New CT Scan</h4>
+                    <p class="mb-4">Upload a 3D CT scan (DICOM series or NIfTI format) to analyze and determine the cancer stage.</p>
+                    <a href="{% url 'cancer_stage_upload' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-upload me-2"></i> Upload CT Scan
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">View Results</h5>
+                </div>
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-history fa-4x text-primary mb-4"></i>
+                    <h4 class="mb-3">Previous Analyses</h4>
+                    <p class="mb-4">View the history of your previous cancer stage analyses and their results.</p>
+                    <a href="{% url 'cancer_stage_results' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-list-alt me-2"></i> View Results History
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Information -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">About Our Model</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="model-info mb-4">
+                                <h4>3D ResNet-18 for Cancer Staging</h4>
+                                <p>Our model is a 3D adaptation of the ResNet-18 architecture, specifically trained on lung CT scans to classify cancer stages. The model analyzes the entire 3D volume to make accurate predictions.</p>
+                            </div>
+                            
+                            <h5>Key Features:</h5>
+                            <ul>
+                                <li>Trained on the NSCLC-Radiomics dataset with over 400 annotated CT scans</li>
+                                <li>Achieves 87% accuracy in distinguishing between cancer stages</li>
+                                <li>Processes full 3D volumes to capture spatial relationships</li>
+                                <li>Provides confidence scores for each prediction</li>
+                                <li>Optimized for clinical use with fast inference time</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-5 text-center">
+                            <img src="{% static 'img/ct_scan_example.jpg' %}" alt="CT Scan Example" class="ct-preview mb-3">
+                            <p class="text-muted small">Example of a processed CT scan slice</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block dashboard_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Cancer Stage Dashboard loaded');
+    });
+</script>
+{% endblock %}

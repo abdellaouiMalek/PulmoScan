@@ -1,0 +1,399 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Cancer Type Results{% endblock %}
+
+{% block page_title %}Cancer Type Results{% endblock %}
+
+{% block dashboard_css %}
+<style>
+    .type-badge {
+        font-weight: 600;
+        padding: 5px 10px;
+        border-radius: 20px;
+    }
+
+    .adenocarcinoma {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+    }
+
+    .squamous {
+        background-color: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+    }
+
+    .small-cell {
+        background-color: rgba(253, 126, 20, 0.1);
+        color: #fd7e14;
+    }
+
+    .normal {
+        background-color: rgba(63, 187, 192, 0.1);
+        color: #3fbbc0;
+    }
+
+    .result-card {
+        transition: all 0.3s ease;
+    }
+
+    .result-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .confidence-bar {
+        height: 8px;
+        border-radius: 4px;
+        margin-top: 5px;
+    }
+
+    .svs-thumbnail {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #eee;
+    }
+
+    .filter-card {
+        background-color: #f8f9fa;
+        border: none;
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container py-4 fade-in">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 mb-4">
+                <i class="fas fa-history me-2"></i> Cancer Type Results
+            </h1>
+            <p class="lead">
+                View the history of your cancer type analyses and their results.
+            </p>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card filter-card">
+                <div class="card-body">
+                    <h5 class="mb-3">Filter Results</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="date-filter" class="form-label">Date Range</label>
+                            <select class="form-select" id="date-filter">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="year">This Year</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="type-filter" class="form-label">Cancer Type</label>
+                            <select class="form-select" id="type-filter">
+                                <option value="all">All Types</option>
+                                <option value="Adenocarcinoma">Adenocarcinoma</option>
+                                <option value="Squamous Cell Carcinoma">Squamous Cell Carcinoma</option>
+                                <option value="Small Cell Carcinoma">Small Cell Carcinoma</option>
+                                <option value="Normal">Normal</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="confidence-filter" class="form-label">Confidence</label>
+                            <select class="form-select" id="confidence-filter">
+                                <option value="all">All Confidence Levels</option>
+                                <option value="high">High (90-100%)</option>
+                                <option value="medium">Medium (70-90%)</option>
+                                <option value="low">Low (Below 70%)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    {% if results %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Preview</th>
+                                    <th>Cancer Type</th>
+                                    <th>Confidence</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for result in results %}
+                                <tr>
+                                    <td>{{ result.id }}</td>
+                                    <td>{{ result.date }}</td>
+                                    <td>
+                                        <div class="svs-thumbnail d-flex align-items-center justify-content-center bg-light">
+                                            <i class="fas fa-microscope text-muted"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="type-badge {% if result.cancer_type == 'Adenocarcinoma' %}adenocarcinoma{% elif result.cancer_type == 'Squamous Cell Carcinoma' %}squamous{% elif result.cancer_type == 'Small Cell Carcinoma' %}small-cell{% else %}normal{% endif %}">
+                                            {{ result.cancer_type }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div>{{ result.confidence }}%</div>
+                                        <div class="progress confidence-bar">
+                                            <div class="progress-bar bg-{% if result.confidence >= 90 %}success{% elif result.confidence >= 70 %}warning{% else %}danger{% endif %}"
+                                                 role="progressbar"
+                                                 style="width: {{ result.confidence }}%">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary view-details"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailsModal"
+                                                data-id="{{ result.id }}"
+                                                data-date="{{ result.date }}"
+                                                data-type="{{ result.cancer_type }}"
+                                                data-confidence="{{ result.confidence }}"
+                                                data-image="{{ result.image_url }}">
+                                            <i class="fas fa-eye"></i> Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> No cancer type analyses have been performed yet.
+                        <a href="{% url 'cancer_type_upload' %}" class="alert-link">Start an analysis</a>.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Type Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="typeChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Confidence Levels</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="confidenceChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Analysis Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="mb-3">SVS Image</h6>
+                        <div class="text-center mb-3 bg-light rounded p-4">
+                            <i class="fas fa-microscope fa-4x text-muted mb-3"></i>
+                            <p class="mb-0">SVS Image Visualization</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Analysis Results</h6>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>ID:</th>
+                                    <td id="modal-id"></td>
+                                </tr>
+                                <tr>
+                                    <th>Date:</th>
+                                    <td id="modal-date"></td>
+                                </tr>
+                                <tr>
+                                    <th>Cancer Type:</th>
+                                    <td id="modal-type"></td>
+                                </tr>
+                                <tr>
+                                    <th>Confidence:</th>
+                                    <td id="modal-confidence"></td>
+                                </tr>
+                                <tr>
+                                    <th>Description:</th>
+                                    <td id="modal-description"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h6 class="mt-4 mb-3">Recommendations</h6>
+                        <div class="alert alert-info">
+                            <p class="mb-0">These recommendations are generated automatically based on the analysis results. Always consult with a medical professional for proper diagnosis and treatment.</p>
+                        </div>
+                        <div id="modal-recommendations"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Download Report</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block dashboard_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Type descriptions
+        const typeDescriptions = {
+            'Adenocarcinoma': 'Adenocarcinoma is the most common type of lung cancer, often found in the outer regions of the lung.',
+            'Squamous Cell Carcinoma': 'Squamous cell carcinoma is often linked to smoking and typically found in the central part of the lungs.',
+            'Small Cell Carcinoma': 'Small cell carcinoma is an aggressive type that spreads quickly and is strongly associated with smoking.',
+            'Normal': 'Normal tissue with no signs of cancer cells.'
+        };
+
+        // Recommendations by type
+        const typeRecommendations = {
+            'Adenocarcinoma': '<ul><li>Further testing to determine stage and spread</li><li>Consider genetic testing for targeted therapies</li><li>Surgical resection is often the primary treatment</li></ul>',
+            'Squamous Cell Carcinoma': '<ul><li>Further testing to determine stage and spread</li><li>Radiation therapy may be recommended</li><li>Combination of surgery and chemotherapy often used</li></ul>',
+            'Small Cell Carcinoma': '<ul><li>Urgent staging to check for metastasis</li><li>Chemotherapy is typically the primary treatment</li><li>Radiation therapy often combined with chemotherapy</li></ul>',
+            'Normal': '<ul><li>No cancer treatment needed</li><li>Regular follow-up screenings recommended</li><li>Consider lifestyle changes if at high risk</li></ul>'
+        };
+
+        // Handle view details button
+        const detailsModal = document.getElementById('detailsModal');
+        detailsModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const id = button.getAttribute('data-id');
+            const date = button.getAttribute('data-date');
+            const type = button.getAttribute('data-type');
+            const confidence = button.getAttribute('data-confidence');
+            const image = button.getAttribute('data-image');
+
+            document.getElementById('modal-id').textContent = id;
+            document.getElementById('modal-date').textContent = date;
+            document.getElementById('modal-type').textContent = type;
+            document.getElementById('modal-confidence').textContent = confidence + '%';
+            document.getElementById('modal-description').textContent = typeDescriptions[type];
+            document.getElementById('modal-recommendations').innerHTML = typeRecommendations[type];
+
+            if (image) {
+                document.getElementById('modal-image').src = image;
+            }
+        });
+
+        // Create type distribution chart
+        const typeCtx = document.getElementById('typeChart').getContext('2d');
+        const typeChart = new Chart(typeCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Adenocarcinoma', 'Squamous Cell Carcinoma', 'Small Cell Carcinoma', 'Normal'],
+                datasets: [{
+                    data: [40, 30, 20, 10],
+                    backgroundColor: [
+                        '#28a745',
+                        '#ffc107',
+                        '#fd7e14',
+                        '#3fbbc0'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    }
+                }
+            }
+        });
+
+        // Create confidence levels chart
+        const confidenceCtx = document.getElementById('confidenceChart').getContext('2d');
+        const confidenceChart = new Chart(confidenceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Adenocarcinoma', 'Squamous Cell Carcinoma', 'Small Cell Carcinoma', 'Normal'],
+                datasets: [{
+                    label: 'Average Confidence (%)',
+                    data: [92, 85, 78, 88],
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.7)',
+                        'rgba(255, 193, 7, 0.7)',
+                        'rgba(253, 126, 20, 0.7)',
+                        'rgba(63, 187, 192, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgb(40, 167, 69)',
+                        'rgb(255, 193, 7)',
+                        'rgb(253, 126, 20)',
+                        'rgb(63, 187, 192)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Handle filters
+        const dateFilter = document.getElementById('date-filter');
+        const typeFilter = document.getElementById('type-filter');
+        const confidenceFilter = document.getElementById('confidence-filter');
+
+        [dateFilter, typeFilter, confidenceFilter].forEach(filter => {
+            filter.addEventListener('change', function() {
+                // In a real implementation, you would filter the results based on the selected values
+                console.log('Filters changed:', {
+                    date: dateFilter.value,
+                    type: typeFilter.value,
+                    confidence: confidenceFilter.value
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

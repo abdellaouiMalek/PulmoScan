@@ -1,0 +1,484 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Upload CT Scan{% endblock %}
+
+{% block page_title %}Upload CT Scan{% endblock %}
+
+{% block dashboard_css %}
+<style>
+    .upload-area {
+        border: 2px dashed #3fbbc0;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        background-color: rgba(63, 187, 192, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .upload-area:hover, .upload-area.dragover {
+        background-color: rgba(63, 187, 192, 0.1);
+        border-color: #2da8ad;
+    }
+    
+    .upload-icon {
+        font-size: 4rem;
+        color: #3fbbc0;
+        margin-bottom: 1rem;
+    }
+    
+    .file-list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    .file-item {
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .file-item:last-child {
+        border-bottom: none;
+    }
+    
+    .file-icon {
+        margin-right: 10px;
+        color: #6c757d;
+    }
+    
+    .file-name {
+        flex-grow: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .file-size {
+        color: #6c757d;
+        font-size: 0.85rem;
+        margin-left: 10px;
+    }
+    
+    .remove-file {
+        color: #dc3545;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    
+    .stage-result {
+        font-size: 2rem;
+        font-weight: 600;
+    }
+    
+    .stage-1 { color: #28a745; }
+    .stage-2 { color: #ffc107; }
+    .stage-3 { color: #fd7e14; }
+    .stage-4 { color: #dc3545; }
+    
+    .confidence-bar {
+        height: 10px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .slice-viewer {
+        width: 100%;
+        height: 300px;
+        background-color: #000;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .slice-controls {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .slice-slider {
+        flex-grow: 1;
+        margin: 0 10px;
+    }
+</style>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container py-4 fade-in">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 mb-4">
+                <i class="fas fa-upload me-2"></i> Upload CT Scan
+            </h1>
+            <p class="lead">
+                Upload a 3D CT scan to analyze and determine the cancer stage using our advanced deep learning model.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div id="upload-container">
+                        <h5 class="card-title mb-4">Upload CT Scan Files</h5>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> You can upload either:
+                            <ul class="mb-0 mt-2">
+                                <li>A series of DICOM files (.dcm) containing the CT scan slices</li>
+                                <li>A single NIfTI file (.nii or .nii.gz) containing the 3D volume</li>
+                            </ul>
+                        </div>
+                        
+                        <form id="upload-form" class="mb-4">
+                            {% csrf_token %}
+                            <div class="upload-area mb-4" id="drop-area">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                <h4>Drag & Drop Files Here</h4>
+                                <p>or</p>
+                                <input type="file" id="file-input" class="d-none" multiple accept=".dcm,.nii,.nii.gz">
+                                <button type="button" id="browse-btn" class="btn btn-primary">
+                                    <i class="fas fa-folder-open me-2"></i> Browse Files
+                                </button>
+                            </div>
+                            
+                            <div id="file-list-container" class="mb-4 d-none">
+                                <h5>Selected Files</h5>
+                                <div class="card">
+                                    <div class="card-body p-0">
+                                        <div class="file-list" id="file-list"></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span id="file-count">0 files selected</span>
+                                    <button type="button" id="clear-files" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash me-1"></i> Clear All
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button type="button" id="analyze-btn" class="btn btn-primary btn-lg" disabled>
+                                    <i class="fas fa-microscope me-2"></i> Analyze CT Scan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Loading Spinner -->
+                    <div id="loading-spinner" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h5 class="mt-3">Analyzing CT scan...</h5>
+                        <p class="text-muted">This may take a few moments</p>
+                        <div class="progress mt-3">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Container -->
+                    <div id="result-container" class="d-none">
+                        <div class="text-center mb-4">
+                            <h4 class="mb-3">Analysis Results</h4>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> Results are for demonstration purposes only. Always consult with a medical professional.
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Cancer Stage</h5>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <div class="stage-result" id="stage-result">Stage II</div>
+                                        <div class="mt-3">
+                                            <div class="progress confidence-bar">
+                                                <div class="progress-bar bg-success" id="confidence-bar" role="progressbar" style="width: 85%"></div>
+                                            </div>
+                                            <p>Confidence: <span id="confidence-value">85%</span></p>
+                                        </div>
+                                        <div class="mt-4">
+                                            <p class="mb-1">Stage Description:</p>
+                                            <p class="text-muted" id="stage-description">
+                                                Cancer has spread to nearby lymph nodes or invaded chest structures.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">CT Scan Visualization</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="slice-viewer" id="slice-viewer">
+                                            <img src="{% static 'img/ct_slice_example.jpg' %}" alt="CT Slice" class="img-fluid">
+                                        </div>
+                                        <div class="slice-controls">
+                                            <button class="btn btn-sm btn-outline-primary" id="prev-slice">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </button>
+                                            <input type="range" class="form-range slice-slider" id="slice-slider" min="0" max="100" value="50">
+                                            <button class="btn btn-sm btn-outline-primary" id="next-slice">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                        <p class="text-center text-muted mt-2">
+                                            Slice: <span id="slice-number">50</span> / <span id="total-slices">100</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button id="new-analysis-btn" class="btn btn-outline-primary">
+                                <i class="fas fa-plus-circle me-2"></i> New Analysis
+                            </button>
+                            <a href="{% url 'cancer_stage_results' %}" class="btn btn-outline-secondary ms-2">
+                                <i class="fas fa-history me-2"></i> View History
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block dashboard_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const browseBtn = document.getElementById('browse-btn');
+        const fileList = document.getElementById('file-list');
+        const fileListContainer = document.getElementById('file-list-container');
+        const fileCount = document.getElementById('file-count');
+        const clearFilesBtn = document.getElementById('clear-files');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const uploadContainer = document.getElementById('upload-container');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const resultContainer = document.getElementById('result-container');
+        const newAnalysisBtn = document.getElementById('new-analysis-btn');
+        
+        // Stage descriptions
+        const stageDescriptions = {
+            'Stage I': 'Cancer is localized to the lung without lymph node involvement.',
+            'Stage II': 'Cancer has spread to nearby lymph nodes or invaded chest structures.',
+            'Stage III': 'Cancer has spread to lymph nodes or structures further from the original tumor.',
+            'Stage IV': 'Cancer has spread to other parts of the body (metastasized).'
+        };
+        
+        // Stage colors
+        const stageColors = {
+            'Stage I': '#28a745',
+            'Stage II': '#ffc107',
+            'Stage III': '#fd7e14',
+            'Stage IV': '#dc3545'
+        };
+        
+        let files = [];
+        
+        // Handle browse button click
+        browseBtn.addEventListener('click', function() {
+            fileInput.click();
+        });
+        
+        // Handle file selection
+        fileInput.addEventListener('change', function() {
+            handleFiles(this.files);
+        });
+        
+        // Handle drag and drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            dropArea.classList.add('dragover');
+        }
+        
+        function unhighlight() {
+            dropArea.classList.remove('dragover');
+        }
+        
+        dropArea.addEventListener('drop', function(e) {
+            const dt = e.dataTransfer;
+            const droppedFiles = dt.files;
+            handleFiles(droppedFiles);
+        });
+        
+        // Handle the selected files
+        function handleFiles(selectedFiles) {
+            files = Array.from(selectedFiles);
+            updateFileList();
+        }
+        
+        // Update the file list display
+        function updateFileList() {
+            if (files.length > 0) {
+                fileListContainer.classList.remove('d-none');
+                fileList.innerHTML = '';
+                
+                files.forEach((file, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    
+                    const fileIcon = document.createElement('i');
+                    fileIcon.className = 'fas fa-file-medical file-icon';
+                    
+                    const fileName = document.createElement('div');
+                    fileName.className = 'file-name';
+                    fileName.textContent = file.name;
+                    
+                    const fileSize = document.createElement('div');
+                    fileSize.className = 'file-size';
+                    fileSize.textContent = formatFileSize(file.size);
+                    
+                    const removeBtn = document.createElement('i');
+                    removeBtn.className = 'fas fa-times remove-file';
+                    removeBtn.addEventListener('click', function() {
+                        files.splice(index, 1);
+                        updateFileList();
+                    });
+                    
+                    fileItem.appendChild(fileIcon);
+                    fileItem.appendChild(fileName);
+                    fileItem.appendChild(fileSize);
+                    fileItem.appendChild(removeBtn);
+                    
+                    fileList.appendChild(fileItem);
+                });
+                
+                fileCount.textContent = `${files.length} file${files.length > 1 ? 's' : ''} selected`;
+                analyzeBtn.disabled = false;
+            } else {
+                fileListContainer.classList.add('d-none');
+                fileList.innerHTML = '';
+                fileCount.textContent = '0 files selected';
+                analyzeBtn.disabled = true;
+            }
+        }
+        
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // Clear all files
+        clearFilesBtn.addEventListener('click', function() {
+            files = [];
+            updateFileList();
+            fileInput.value = '';
+        });
+        
+        // Handle analyze button click
+        analyzeBtn.addEventListener('click', function() {
+            // Show loading spinner
+            uploadContainer.classList.add('d-none');
+            loadingSpinner.classList.remove('d-none');
+            
+            // Simulate API call (in a real implementation, you would send the files to the server)
+            setTimeout(function() {
+                // Hide loading spinner
+                loadingSpinner.classList.add('d-none');
+                
+                // Show results
+                resultContainer.classList.remove('d-none');
+                
+                // Set result values (this would come from the API response)
+                const stage = 'Stage II';
+                const confidence = 85;
+                
+                document.getElementById('stage-result').textContent = stage;
+                document.getElementById('stage-result').style.color = stageColors[stage];
+                document.getElementById('confidence-value').textContent = confidence + '%';
+                document.getElementById('confidence-bar').style.width = confidence + '%';
+                document.getElementById('stage-description').textContent = stageDescriptions[stage];
+                
+                // Initialize slice viewer controls
+                initSliceViewer();
+            }, 3000);
+        });
+        
+        // Initialize slice viewer
+        function initSliceViewer() {
+            const sliceSlider = document.getElementById('slice-slider');
+            const sliceNumber = document.getElementById('slice-number');
+            const totalSlices = document.getElementById('total-slices');
+            const prevSliceBtn = document.getElementById('prev-slice');
+            const nextSliceBtn = document.getElementById('next-slice');
+            
+            // Set total slices
+            const numSlices = 100;
+            totalSlices.textContent = numSlices;
+            sliceSlider.max = numSlices - 1;
+            sliceSlider.value = Math.floor(numSlices / 2);
+            sliceNumber.textContent = Math.floor(numSlices / 2) + 1;
+            
+            // Handle slider change
+            sliceSlider.addEventListener('input', function() {
+                sliceNumber.textContent = parseInt(this.value) + 1;
+                // In a real implementation, you would update the slice image
+            });
+            
+            // Handle previous slice button
+            prevSliceBtn.addEventListener('click', function() {
+                if (sliceSlider.value > 0) {
+                    sliceSlider.value--;
+                    sliceNumber.textContent = parseInt(sliceSlider.value) + 1;
+                    // In a real implementation, you would update the slice image
+                }
+            });
+            
+            // Handle next slice button
+            nextSliceBtn.addEventListener('click', function() {
+                if (sliceSlider.value < numSlices - 1) {
+                    sliceSlider.value++;
+                    sliceNumber.textContent = parseInt(sliceSlider.value) + 1;
+                    // In a real implementation, you would update the slice image
+                }
+            });
+        }
+        
+        // Handle new analysis button click
+        newAnalysisBtn.addEventListener('click', function() {
+            resultContainer.classList.add('d-none');
+            uploadContainer.classList.remove('d-none');
+            files = [];
+            updateFileList();
+            fileInput.value = '';
+        });
+    });
+</script>
+{% endblock %}

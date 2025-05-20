@@ -1,0 +1,386 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}PulmoScan - Classification Dashboard{% endblock %}
+
+{% block page_title %}Classification Dashboard{% endblock %}
+
+{% block dashboard_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="container py-4 fade-in">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-primary text-white">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="mb-3">Welcome, {{ request.user.get_full_name|default:request.user.username }}!</h2>
+                            <p class="lead mb-0">Welcome to the PulmoScan dashboard, your artificial intelligence tool for lung cancer detection and classification.</p>
+                        </div>
+                        <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
+                            <i class="fas fa-lungs fa-5x text-white-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card stat-card-primary h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h5 class="text-muted mb-1">Total Analyses</h5>
+                            <h2 class="mb-0">{{ stats.total }}</h2>
+                        </div>
+                        <div class="col-4 text-end">
+                            <i class="fas fa-chart-line text-primary stat-icon"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-success">
+                            <i class="fas fa-arrow-up me-1"></i>{{ stats.total|default:0 }}
+                        </span>
+                        <span class="text-muted ms-2">Since the beginning</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card stat-card-danger h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h5 class="text-muted mb-1">Malignant Nodules</h5>
+                            <h2 class="mb-0">{{ stats.malignant }}</h2>
+                        </div>
+                        <div class="col-4 text-end">
+                            <i class="fas fa-exclamation-triangle text-danger stat-icon"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-muted">
+                            {{ stats.malignant_percent|floatformat:1 }}% of analyses
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card stat-card-success h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h5 class="text-muted mb-1">Benign Nodules</h5>
+                            <h2 class="mb-0">{{ stats.benign }}</h2>
+                        </div>
+                        <div class="col-4 text-end">
+                            <i class="fas fa-check-circle text-success stat-icon"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-muted">
+                            {{ stats.benign_percent|floatformat:1 }}% of analyses
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card stat-card-warning h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h5 class="text-muted mb-1">Average Accuracy</h5>
+                            <h2 class="mb-0">{{ stats.avg_confidence|default:"N/A" }}</h2>
+                        </div>
+                        <div class="col-4 text-end">
+                            <i class="fas fa-bullseye text-warning stat-icon"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-muted">
+                            Based on {{ stats.total }} analyses
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Recent Predictions -->
+    <div class="row mb-4">
+        <!-- Charts -->
+        <div class="col-lg-8 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Analysis Statistics</h5>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-primary active" id="weekBtn">Week</button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="monthBtn">Month</button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="yearBtn">Year</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="analysisChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Activity</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="p-3">
+                        {% if recent_predictions %}
+                            {% for prediction in recent_predictions|slice:":5" %}
+                                <div class="activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="fw-bold">
+                                            {% if prediction.is_malignant %}
+                                                <span class="text-danger">
+                                                    <i class="fas fa-exclamation-triangle me-1"></i> Malignant
+                                                </span>
+                                            {% else %}
+                                                <span class="text-success">
+                                                    <i class="fas fa-check-circle me-1"></i> Benign
+                                                </span>
+                                            {% endif %}
+                                        </span>
+                                        <span class="activity-date">{{ prediction.created_at|date:"d/m/Y H:i" }}</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <small class="text-muted">Probability: {{ prediction.prediction|floatformat:4 }}</small>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-info-circle fa-3x text-muted mb-3"></i>
+                                <p>No recent activity.</p>
+                                <a href="{% url 'upload' %}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-upload me-1"></i> Analyze an image
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if recent_predictions %}
+                <div class="card-footer bg-white text-center">
+                    <a href="{% url 'results' %}" class="btn btn-sm btn-outline-primary">
+                        View all history <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Distribution and Quick Actions -->
+    <div class="row">
+        <!-- Distribution Chart -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Results Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height: 250px;">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <a href="{% url 'upload' %}" class="card text-decoration-none h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-upload fa-3x text-primary mb-3"></i>
+                                    <h5>Analyze an Image</h5>
+                                    <p class="text-muted mb-0">Upload and analyze a new image</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'results' %}" class="card text-decoration-none h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-list-alt fa-3x text-primary mb-3"></i>
+                                    <h5>View History</h5>
+                                    <p class="text-muted mb-0">Check all your previous analyses</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'profile' %}" class="card text-decoration-none h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-user-cog fa-3x text-primary mb-3"></i>
+                                    <h5>Manage Profile</h5>
+                                    <p class="text-muted mb-0">Update your personal information</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="#" class="card text-decoration-none h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-file-export fa-3x text-primary mb-3"></i>
+                                    <h5>Export Data</h5>
+                                    <p class="text-muted mb-0">Download your data in CSV/PDF format</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block dashboard_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Analysis Chart
+        const analysisCtx = document.getElementById('analysisChart').getContext('2d');
+        const analysisChart = new Chart(analysisCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                    {
+                        label: 'Total Analyses',
+                        data: [3, 5, 2, 7, 4, 6, {{ stats.total|default:0 }}],
+                        borderColor: '#4361ee',
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Malignant Nodules',
+                        data: [1, 2, 0, 3, 1, 2, {{ stats.malignant|default:0 }}],
+                        borderColor: '#e63946',
+                        backgroundColor: 'rgba(230, 57, 70, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Benign Nodules',
+                        data: [2, 3, 2, 4, 3, 4, {{ stats.benign|default:0 }}],
+                        borderColor: '#06d6a0',
+                        backgroundColor: 'rgba(6, 214, 160, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+
+        // Distribution Chart
+        const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+        const distributionChart = new Chart(distributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Malignant Nodules', 'Benign Nodules'],
+                datasets: [{
+                    data: [{{ stats.malignant|default:0 }}, {{ stats.benign|default:0 }}],
+                    backgroundColor: ['#e63946', '#06d6a0'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+
+        // Time period buttons
+        document.getElementById('weekBtn').addEventListener('click', function() {
+            updateTimeFrame(this, 'week');
+        });
+
+        document.getElementById('monthBtn').addEventListener('click', function() {
+            updateTimeFrame(this, 'month');
+        });
+
+        document.getElementById('yearBtn').addEventListener('click', function() {
+            updateTimeFrame(this, 'year');
+        });
+
+        function updateTimeFrame(button, period) {
+            // Remove active class from all buttons
+            document.querySelectorAll('#weekBtn, #monthBtn, #yearBtn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Add active class to clicked button
+            button.classList.add('active');
+
+            // Update chart data based on period
+            if (period === 'week') {
+                analysisChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                analysisChart.data.datasets[0].data = [3, 5, 2, 7, 4, 6, {{ stats.total|default:0 }}];
+                analysisChart.data.datasets[1].data = [1, 2, 0, 3, 1, 2, {{ stats.malignant|default:0 }}];
+                analysisChart.data.datasets[2].data = [2, 3, 2, 4, 3, 4, {{ stats.benign|default:0 }}];
+            } else if (period === 'month') {
+                analysisChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                analysisChart.data.datasets[0].data = [12, 19, 15, {{ stats.total|default:0 }}];
+                analysisChart.data.datasets[1].data = [5, 7, 6, {{ stats.malignant|default:0 }}];
+                analysisChart.data.datasets[2].data = [7, 12, 9, {{ stats.benign|default:0 }}];
+            } else if (period === 'year') {
+                analysisChart.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                analysisChart.data.datasets[0].data = [30, 45, 55, 60, 48, 52, 60, 55, 58, 62, 65, {{ stats.total|default:0 }}];
+                analysisChart.data.datasets[1].data = [12, 18, 22, 25, 20, 21, 24, 22, 23, 25, 26, {{ stats.malignant|default:0 }}];
+                analysisChart.data.datasets[2].data = [18, 27, 33, 35, 28, 31, 36, 33, 35, 37, 39, {{ stats.benign|default:0 }}];
+            }
+
+            analysisChart.update();
+        }
+    });
+</script>
+{% endblock %}
