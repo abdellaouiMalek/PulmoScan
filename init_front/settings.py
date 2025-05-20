@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "api",
     "dashboard",
     "cancer_stage",
+    "cancer_type",
 ]
 
 MIDDLEWARE = [

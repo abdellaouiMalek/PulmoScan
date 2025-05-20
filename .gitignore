@@ -76,6 +76,8 @@ cancer_stage/*
 # But not these files
 !cancer_stage/main.ipynb
 !cancer_stage/densenet_main.ipynb
+!cancer_stage/urls.py
+!cancer_stage/views.py
 
 
 Cancer_Classification.ipynb
