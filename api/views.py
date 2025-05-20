@@ -1,79 +1,63 @@
-from rest_framework import status
-from rest_framework.decorators import api_view, parser_classes, permission_classes
-from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import AllowAny
-from .models import PredictionResult
-from .serializers import ScanImageSerializer, PredictionResponseSerializer
-from . import lung_cancer_model
+import os
+import pandas as pd
 import logging
+import tempfile
+import sys
+import time
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
 
-# Configure logging
-logger = logging.getLogger(__name__)
+# Add a unique timestamp to verify code is being reloaded
+RELOAD_TIMESTAMP = time.time()
 
-@api_view(['POST'])
-@parser_classes([MultiPartParser, FormParser])
-@permission_classes([AllowAny])
-def predict_image(request):
+# Get the logger
+logger = logging.getLogger('django')  # Use Django's logger
+
+@csrf_exempt
+def detect_ct_nodules(request):
     """
-    API endpoint for image prediction
+    API endpoint that logs information about uploaded files.
     """
-    logger.info("Received prediction request")
+    print("==== Starting detect_ct_nodules function ====")
+    print(f"Code reload timestamp: {RELOAD_TIMESTAMP}")
+    print(f"Current file path: {__file__}")
+    
+    if request.method != 'POST':
+        print("Error: Only POST method is allowed")
+        return JsonResponse({'error': 'Only POST method is allowed'}, status=400)
+    
+    # Print directly to console for immediate visibility
+    print("==== File Upload Request Received ====")
+    
+    # Log using Django's logger
+    logger.info("Received file upload request")
+    
+    # Create temporary directory for processing
+    temp_dir = tempfile.mkdtemp()
+    print(f"Created temporary directory: {temp_dir}")
+    print("dghgndg")
+    
+    # Return a simple response to verify the function is being called
+    return JsonResponse({
+        'message': 'API endpoint reached successfully',
+        'timestamp': RELOAD_TIMESTAMP,
+        'file_path': __file__
+    })
+    
+    # The rest of the code is commented out to simplify debugging
+    # If you see this response, it means your changes are being loaded
 
-    if 'image' not in request.FILES:
-        logger.error("No image provided in request")
-        return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
-
-    logger.info(f"Image received: {request.FILES['image'].name}, size: {request.FILES['image'].size} bytes")
-
-    # Save the uploaded image
-    image_serializer = ScanImageSerializer(data=request.data)
-    if image_serializer.is_valid():
-        logger.info("Image data is valid, saving...")
-        scan_image = image_serializer.save()
-
-        # Associate with user if authenticated
-        if request.user.is_authenticated:
-            scan_image.user = request.user
-            scan_image.save()
-            logger.info(f"Image associated with user: {request.user.username}")
-
-        logger.info(f"Image saved at: {scan_image.image.path}")
-
-        try:
-            # Make prediction
-            logger.info("Loading model and making prediction...")
-            result = lung_cancer_model.predict(scan_image.image)
-            logger.info(f"Prediction result: {result}")
-
-            # Save prediction result
-            prediction = PredictionResult.objects.create(
-                scan_image=scan_image,
-                prediction=result['prediction'],
-                is_malignant=result['is_malignant']
-            )
-            logger.info(f"Prediction saved with ID: {prediction.id}")
-
-            # Return the prediction result
-            serializer = PredictionResponseSerializer(prediction, context={'request': request})
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            logger.error(f"Error during prediction: {str(e)}", exc_info=True)
-            # Delete the image if prediction fails
-            scan_image.delete()
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    else:
-        logger.error(f"Invalid image data: {image_serializer.errors}")
-
-    return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def get_predictions(request):
+@csrf_exempt
+def test_endpoint(request):
     """
-    API endpoint to get all predictions
+    Simple test endpoint to verify API is working
     """
-    predictions = PredictionResult.objects.all().order_by('-created_at')
-    serializer = PredictionResponseSerializer(predictions, many=True, context={'request': request})
-    return Response(serializer.data)
+    print("==== Test endpoint called ====")
+    return JsonResponse({
+        'message': 'Test endpoint reached successfully',
+        'timestamp': time.time(),
+        'method': request.method
+    })

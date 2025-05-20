@@ -2,6 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('predict/', views.predict_image, name='predict_image'),
-    path('predictions/', views.get_predictions, name='get_predictions'),
+    path('detect/', views.detect_ct_nodules, name='detect_ct_nodules'),
+    path('test/', views.test_endpoint, name='test_endpoint'),
 ]

@@ -1,0 +1,7 @@
+pydicom
+nibabel
+scikit-image
+scipy
+
+# Add these for 3D visualization
+plotly>=5.3.1

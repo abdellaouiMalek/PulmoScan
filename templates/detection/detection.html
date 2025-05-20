@@ -1,0 +1,125 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block content %}
+{% if has_nodules and processing_status == 'initial' %}
+    <div class="card mt-4">
+        <div class="card-header bg-warning text-white">
+            <h5 class="mb-0">Nodules Detected</h5>
+        </div>
+        <div class="card-body">
+            <p>{{ nodule_message }}</p>
+            
+            <h6>Nodule Information:</h6>
+            <ul>
+                {% for nodule in nodules %}
+                    <li>
+                        <strong>Nodule {{ nodule.id }}:</strong> 
+                        World coordinates: ({{ nodule.x|floatformat:2 }}, {{ nodule.y|floatformat:2 }}, {{ nodule.z|floatformat:2 }}) mm, 
+                        Diameter: {{ nodule.diameter|floatformat:2 }} mm
+                        {% if nodule.voxel_x %}
+                            <br>
+                            Voxel coordinates: ({{ nodule.voxel_x }}, {{ nodule.voxel_y }}, {{ nodule.voxel_z }})
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            
+            <form method="post" action="{% url 'process_nodules' %}">
+                {% csrf_token %}
+                <input type="hidden" name="mhd_path" value="{{ mhd_path }}">
+                <input type="hidden" name="seriesuid" value="{{ mhd_file|cut:'.mhd' }}">
+                <button type="submit" class="btn btn-primary">
+                    Process Nodules (This may take a few minutes)
+                </button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+{% if processing_status == 'completed' %}
+    <div class="card mt-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Nodule Processing Complete</h5>
+        </div>
+        <div class="card-body">
+            <p>{{ nodule_message }}</p>
+            
+            <h6>Nodule Information:</h6>
+            <ul>
+                {% for nodule in nodules %}
+                    <li>
+                        <strong>Nodule {{ nodule.id }}:</strong> 
+                        World coordinates: ({{ nodule.x|floatformat:2 }}, {{ nodule.y|floatformat:2 }}, {{ nodule.z|floatformat:2 }}) mm, 
+                        Diameter: {{ nodule.diameter|floatformat:2 }} mm
+                        {% if nodule.voxel_x %}
+                            <br>
+                            Voxel coordinates: ({{ nodule.voxel_x }}, {{ nodule.voxel_y }}, {{ nodule.voxel_z }})
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+
+{% if has_nodules and segmentation_images %}    <div class="card mt-4">
+        <div class="card-header bg-info text-white">            <h5 class="mb-0">Nodule Segmentation</h5>
+        </div>        <div class="card-body">
+            <p class="text-muted">Showing segmentation results for different types of nodules.</p>            
+            <div class="row">                {% for seg in segmentation_images %}
+                    <div class="col-12 mb-3">                        <div class="card">
+                            <div class="card-header">                                <h6 class="mb-0">Segmentation for Slice {{ seg.index }} of {{ total_slices }}</h6>
+                            </div>                            <img src="{{ seg.url }}" class="img-fluid" alt="Segmentation {{ seg.index }}">
+                            <div class="card-footer">                                <small class="text-muted">
+                                    Left: Original slice | Right: Different nodule type segmentations                                </small>
+                            </div>                        </div>
+                    </div>                {% endfor %}
+            </div>        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% if has_nodules and processing_status == 'completed' and nodule_slices %}
+<div class="card mt-4">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0">CT Scan Slices with Highlighted Nodules</h5>
+    </div>
+    <div class="card-body">
+        <p>Below are the CT scan slices showing the detected nodules:</p>
+        
+        <div class="row">
+            {% for slice in nodule_slices %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Nodule {{ slice.id }} ({{ slice.diameter_mm|floatformat:1 }}mm)</h6>
+                        </div>
+                        <div class="text-center">
+                            <img src="{{ slice.url }}" class="img-fluid" alt="Nodule {{ slice.id }} Slice">
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">
+                                Slice: {{ slice.z_index }} of {{ total_slices }} | 
+                                World coordinates: ({{ slice.world_x|floatformat:1 }}, {{ slice.world_y|floatformat:1 }}, {{ slice.world_z|floatformat:1 }}) mm | 
+                                Voxel coordinates: ({{ slice.voxel_x }}, {{ slice.voxel_y }}, {{ slice.voxel_z }})
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

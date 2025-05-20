@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">File Upload</h5>
+                </div>
+                <div class="card-body">
+                    {% if upload_success %}
+                        <div class="alert alert-success">
+                            <h5>CT Scan Processed Successfully</h5>
+                            <p>File: {{ mhd_file }}</p>
+                            {% if has_nodules %}
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>{{ nodule_count }} nodule(s) detected!</strong>
+                                    <p class="mb-0">This CT scan contains potential lung nodules. Please consult with a medical professional for proper diagnosis.</p>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <strong>No nodules detected</strong>
+                                    <p class="mb-0">No nodules were found in this CT scan. This indicates the scan is likely normal, but please consult with a medical professional for proper diagnosis.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">CT Scan Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Total Slices:</strong> {{ total_slices }}</p>
+                                        <p><strong>Image Shape:</strong> {{ image_shape }}</p>
+                                        <p><strong>Nodule Status:</strong> 
+                                            {% if has_nodules %}
+                                                <span class="badge bg-warning">{{ nodule_count }} Nodule(s) Detected</span>
+                                            {% else %}
+                                                <span class="badge bg-success">No Nodules Detected</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>MHD File:</strong> {{ mhd_file }}</p>
+                                        {% if raw_file %}
+                                            <p><strong>RAW File:</strong> {{ raw_file }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if has_nodules %}
+                            <div class="card mt-4">
+                                <div class="card-header bg-warning text-dark">
+                                    <h5 class="mb-0">Nodule Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nodule ID</th>
+                                                    <th>Coordinates (x, y, z)</th>
+                                                    <th>Diameter (mm)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for nodule in nodules %}
+                                                <tr>
+                                                    <td>{{ nodule.id }}</td>
+                                                    <td>({{ nodule.x|floatformat:2 }}, {{ nodule.y|floatformat:2 }}, {{ nodule.z|floatformat:2 }})</td>
+                                                    <td>{{ nodule.diameter|floatformat:2 }}</td>
+                                                </tr>
+                                                {% empty %}
+                                                <tr>
+                                                    <td colspan="3" class="text-center">
+                                                        <em>Detailed nodule information will be displayed here in a future update.</em>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    {% if processing_status == 'initial' %}
+                                    <form method="post" action="{% url 'process_nodules' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="mhd_path" value="{{ mhd_path }}">
+                                        <input type="hidden" name="seriesuid" value="{{ mhd_file|cut:'.mhd' }}">
+                                        <button type="submit" class="btn btn-primary">
+                                            Process Nodules (This may take a few minutes)
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">CT Scan Slices</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted">Showing {{ slice_images|length }} sample slices from the CT scan.</p>
+                                
+                                <div class="row">
+                                    {% for slice in slice_images %}
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h6 class="mb-0">Slice {{ slice.index }} of {{ total_slices }}</h6>
+                                                </div>
+                                                <img src="{{ slice.url }}" class="img-fluid" alt="CT Slice {{ slice.index }}">
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if has_nodules and processing_status == 'completed' and segmentation_images %}
+                            <div class="card mt-4">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="mb-0">Nodule Segmentation</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-muted">Showing segmentation results for different types of nodules.</p>
+                                    
+                                    <div class="row">
+                                        {% for seg in segmentation_images %}
+                                            <div class="col-12 mb-3">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h6 class="mb-0">Segmentation for Slice {{ seg.index }} of {{ total_slices }}</h6>
+                                                    </div>
+                                                    <img src="{{ seg.url }}" class="img-fluid" alt="Segmentation {{ seg.index }}">
+                                                    <div class="card-footer">
+                                                        <small class="text-muted">
+                                                            Left: Original slice | Right: Different nodule type segmentations
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="mt-4">
+                            <a href="{% url 'detection' %}" class="btn btn-primary">Process Another CT Scan</a>
+                        </div>
+                    {% elif error_message %}
+                        <div class="alert alert-danger">
+                            <h5>Error processing file:</h5>
+                            <p>{{ error_message }}</p>
+                        </div>
+                        <a href="{% url 'detection' %}" class="btn btn-primary">Try Again</a>
+                    {% else %}
+                        <form id="upload-form" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="mhd-upload" class="form-label">Upload .mhd File</label>
+                                <input class="form-control" type="file" id="mhd-upload" name="mhd_file" accept=".mhd">
+                            </div>
+                            <div class="mb-3">
+                                <label for="raw-upload" class="form-label">Upload .raw File (Optional)</label>
+                                <input class="form-control" type="file" id="raw-upload" name="raw_file" accept=".raw">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    $('#mhd-upload').on('change', function() {
+        if (this.files && this.files[0]) {
+            const file = this.files[0];
+            console.log('Selected MHD file:', file.name);
+            console.log('File size:', file.size, 'bytes');
+        }
+    });
+    
+    $('#raw-upload').on('change', function() {
+        if (this.files && this.files[0]) {
+            const file = this.files[0];
+            console.log('Selected RAW file:', file.name);
+            console.log('File size:', file.size, 'bytes');
+        }
+    });
+});
+</script>
+{% endblock %}
+
