@@ -72,7 +72,7 @@ env/
 evaluationScript/
 
 # Ignore everything in the folder
-#cancer_stage/*
+cancer_stage/*
 # But not these files
 !cancer_stage/main.ipynb
 !cancer_stage/densenet_main.ipynb
@@ -86,7 +86,6 @@ Nodules_Detector.ipynb
 # All pdf files
 *.pdf
 
-cancer_stage/*
 .venv/
 frontend/
 *.sqlite3
@@ -97,8 +96,6 @@ frontend/
 # Ignore the cancer_classification folder
 cancer_classification/
 
-# Ignore the cancer_stage folder
-cancer_stage/
 
 # Ignore the cancer_type folder
 cancer_type/balanced_images/
