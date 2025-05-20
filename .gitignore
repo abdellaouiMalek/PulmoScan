@@ -87,3 +87,32 @@ Nodules_Detector.ipynb
 cancer_stage/*
 .venv/
 frontend/
+*.sqlite3
+
+# All csv files
+*.csv
+
+# Ignore the cancer_classification folder
+cancer_classification/
+
+# Ignore the cancer_stage folder
+cancer_stage/
+
+# Ignore the cancer_type folder
+cancer_type/balanced_images/
+cancer_type/processed_images/
+
+cancer_stage/.ipynb_checkpoints/
+cancer_stage/checkpoints/
+cancer_stage/densenet121_checkpoints/
+cancer_stage/densenet121_checkpoints_balanced/
+cancer_stage/preprocessed_data/
+cancer_stage/preprocessed_data_integrated/
+
+cancer_type/.ipynb_checkpoints/
+cancer_type/balanced_images/
+cancer_type/processed_images/
+
+frontend/
+main/
+PulmoScan/
