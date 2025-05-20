@@ -72,7 +72,7 @@ env/
 evaluationScript/
 
 # Ignore everything in the folder
-cancer_stage/*
+#cancer_stage/*
 # But not these files
 !cancer_stage/main.ipynb
 !cancer_stage/densenet_main.ipynb
