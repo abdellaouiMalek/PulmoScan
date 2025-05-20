@@ -17,7 +17,7 @@ CANCER_TYPE_LABELS = ['Adenocarcinoma', 'Squamous Cell Carcinoma', 'Small Cell C
 class CancerTypeDashboardView(TemplateView):
     """View for the cancer type dashboard"""
     template_name = 'cancer_type/dashboard.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Cancer Type Analysis'
@@ -25,55 +25,61 @@ class CancerTypeDashboardView(TemplateView):
 
 class CancerTypeUploadView(View):
     """View for uploading SVS images for cancer type analysis"""
-    
+
     def get(self, request):
         return render(request, 'cancer_type/upload.html', {'title': 'Upload SVS Image'})
-    
+
     def post(self, request):
         if 'svs_file' not in request.FILES:
             return JsonResponse({'error': 'No file uploaded'}, status=400)
-        
+
         # Create a temporary directory for the uploaded file
         fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'temp_svs_images'))
-        
+
         # Save the uploaded file
         uploaded_file = request.FILES['svs_file']
         filename = fs.save(uploaded_file.name, uploaded_file)
         file_path = fs.path(filename)
-        
+
         try:
             # Process the SVS image
             processed_image = self.process_svs_image(file_path)
-            
+
             # Predict the cancer type
             cancer_type, confidence = self.predict_cancer_type(processed_image)
-            
-            # Save the results
-            result_id = self.save_results(request.user, cancer_type, confidence)
-            
+
+            # Save the results - use a username if available, otherwise use 'anonymous'
+            username = request.user.username if request.user.is_authenticated else 'anonymous'
+            result_id = self.save_results(username, cancer_type, confidence)
+
             # Clean up temporary file
             if os.path.exists(file_path):
                 os.remove(file_path)
-            
+
             return JsonResponse({
                 'success': True,
                 'cancer_type': cancer_type,
                 'confidence': confidence,
                 'result_id': result_id
             })
-            
+
         except Exception as e:
             # Clean up temporary file
             if os.path.exists(file_path):
                 os.remove(file_path)
-            
+
+            # Log the error for debugging
+            import traceback
+            print(f"Error in cancer_type upload: {str(e)}")
+            print(traceback.format_exc())
+
             return JsonResponse({'error': str(e)}, status=500)
-    
+
     def process_svs_image(self, file_path):
         """Process the uploaded SVS image"""
         # In a real implementation, you would use openslide to process the SVS image
         # For demonstration purposes, we'll just return a dummy processed image
-        
+
         # Try to open the image with PIL to check if it's a valid image
         try:
             img = Image.open(file_path)
@@ -81,29 +87,29 @@ class CancerTypeUploadView(View):
             return img_array
         except Exception as e:
             raise ValueError(f"Failed to process image: {str(e)}")
-    
+
     def predict_cancer_type(self, processed_image):
         """Predict the cancer type using the trained model"""
         # For demonstration purposes, we'll return a simulated result
         # In a real implementation, you would load the model and make a prediction
-        
+
         # Simulate a prediction - we're not actually using the processed_image here
         # but in a real implementation, we would use it with the model
         predicted_class = random.randint(0, 3)  # Random type between 0 and 3
         confidence = random.uniform(70.0, 95.0)  # Random confidence between 70% and 95%
-        
+
         return CANCER_TYPE_LABELS[predicted_class], confidence
-    
-    def save_results(self, user, cancer_type, confidence):
+
+    def save_results(self, username, cancer_type, confidence):
         """Save the prediction results to the database"""
         # This would typically save to a database model
         # For now, we'll just return a dummy ID
-        return 'result_' + str(hash(f"{user.username}_{cancer_type}_{confidence}"))[:8]
+        return 'result_' + str(hash(f"{username}_{cancer_type}_{confidence}"))[:8]
 
 class CancerTypeResultsView(TemplateView):
     """View for displaying cancer type analysis results"""
     template_name = 'cancer_type/results.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Cancer Type Results'
