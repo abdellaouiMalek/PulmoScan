@@ -1,8 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'dashboard/dashboard_base.html' %}
 
 {% block title %}PulmoScan - Analysis History{% endblock %}
 
-{% block content %}
+{% block page_title %}Analysis History{% endblock %}
+
+{% block dashboard_content %}
 <div class="row mb-4">
     <div class="col-12">
         <h1 class="display-5 mb-4">
@@ -109,7 +111,7 @@
 </div>
 {% endblock %}
 
-{% block extra_js %}
+{% block dashboard_js %}
 <script>
     $(document).ready(function() {
         // Handle view details button

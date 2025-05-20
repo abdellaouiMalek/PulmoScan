@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "main",
+    "api",
+    "dashboard",
+    "cancer_stage",
 ]
 
 MIDDLEWARE = [

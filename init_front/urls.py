@@ -22,6 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("main.urls")),
+    path("api/", include("api.urls")),
+    path("cancer_stage/", include("cancer_stage.urls")),
 ]
 
 # Serve static and media files in development

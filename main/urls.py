@@ -1,5 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.auth.decorators import login_required
+from dashboard.views import DashboardView, UploadView, ResultsView
+
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -14,4 +19,10 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('logout/', views.logout_view, name='logout'),
     path('test/', views.test, name='test'),
+    path('medical/', include('medical_app.urls')),
+
+    path('dashboardClassification/', login_required(DashboardView.as_view()), name='dashboardClassification'),
+    path('upload/', login_required(UploadView.as_view()), name='upload'),
+    path('results/', login_required(ResultsView.as_view()), name='results'),
+    
 ]

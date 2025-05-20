@@ -6,7 +6,7 @@ from datetime import timedelta
 from api.models import PredictionResult
 
 class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboard/dashboard.html'
+    template_name = 'dashboardClassification.html'  # Using the template from frontend/templates
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

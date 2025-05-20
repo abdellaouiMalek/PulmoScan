@@ -14,10 +14,11 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('medical/', include('medical_app.urls')),
 
-    # Protected dashboard routes
-    path('', login_required(DashboardView.as_view()), name='dashboard'),
+    path('dashboardClassification/', login_required(DashboardView.as_view()), name='dashboard'),
     path('upload/', login_required(UploadView.as_view()), name='upload'),
     path('results/', login_required(ResultsView.as_view()), name='results'),
+    path("admin/", admin.site.urls),
+    path("", include("main.urls")),
 ]
 
 # Serve media files in development
