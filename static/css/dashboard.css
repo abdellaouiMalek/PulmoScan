@@ -30,11 +30,14 @@ body.dashboard-page {
     background-color: var(--primary-color);
     color: #fff;
     position: fixed;
-    height: 100%;
+    height: calc(100% - 120px);
     overflow-y: auto;
     transition: all 0.3s;
     z-index: 1000;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 0 15px 15px 0;
+    left: 0;
+    top: 120px; /* Position after navbar */
 }
 
 .sidebar-header {
@@ -48,20 +51,10 @@ body.dashboard-page {
     color: #fff;
 }
 
-.sidebar-brand {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-}
-
-.sidebar-brand img {
-    max-height: 40px;
-    margin-right: 10px;
-}
-
-.sidebar-brand span {
-    font-size: 1.2rem;
-    font-weight: 600;
+/* Sidebar top spacing */
+.sidebar-top-space {
+    height: 20px;
+    width: 100%;
 }
 
 .sidebar-menu {
@@ -93,9 +86,12 @@ body.dashboard-page {
 
 .sidebar-menu li a i {
     margin-right: 10px;
-    font-size: 1.1rem;
-    width: 20px;
+    font-size: 1.2rem;
+    width: 24px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .sidebar-menu .submenu {
@@ -219,7 +215,8 @@ body.dashboard-page {
     .sidebar {
         margin-left: -250px;
         position: fixed;
-        height: 100%;
+        height: calc(100% - 100px);
+        top: 100px;
         z-index: 1050;
     }
 
@@ -238,7 +235,7 @@ body.dashboard-page {
     .sidebar-toggle {
         display: block;
         position: fixed;
-        top: 15px;
+        top: 125px;
         left: 15px;
         z-index: 1060;
     }

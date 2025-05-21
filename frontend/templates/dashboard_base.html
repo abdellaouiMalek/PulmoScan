@@ -39,10 +39,8 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-      <div class="sidebar-brand">
-        <img src="{% static 'img/logo.png' %}" alt="PulmoScan Logo">
-        <span>PulmoScan</span>
-      </div>
+      <!-- Sidebar top spacing -->
+      <div class="sidebar-top-space"></div>
 
       <div class="sidebar-user">
         <img src="https://ui-avatars.com/api/?name={{ request.user.get_full_name|default:request.user.username }}&background=3fbbc0&color=fff" alt="User Profile">
@@ -57,8 +55,23 @@
           </a>
         </li>
         <li>
+          <a href="{% url 'cancer_stage_dashboard' %}" class="{% if request.path == '/cancer_stage/' %}active{% endif %}">
+            <i class="fas fa-lungs"></i> Cancer Stage
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'cancer_type_dashboard' %}" class="{% if request.path == '/cancer_type/' %}active{% endif %}">
+            <i class="fas fa-dna"></i> Cancer Type
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'dashboardClassification' %}" class="{% if request.path == '/dashboardClassification/' %}active{% endif %}">
+            <i class="fas fa-microscope"></i> Cancer Classification
+          </a>
+        </li>
+        <li>
           <a href="{% url 'upload' %}" class="{% if request.path == '/upload/' %}active{% endif %}">
-            <i class="fas fa-upload"></i> Analyze Image
+            <i class="fas fa-upload"></i> Cancer Detection
           </a>
         </li>
         <li>

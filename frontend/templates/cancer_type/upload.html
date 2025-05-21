@@ -96,17 +96,20 @@
                         <h5 class="card-title mb-4">Upload SVS Image</h5>
 
                         <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i> Please upload an SVS (Aperio Slide Virtual Slide) image file.
+                            <i class="fas fa-info-circle me-2"></i> Please upload an SVS (Aperio Slide Virtual Slide) image file or any other image file for testing purposes.
                         </div>
 
                         <form id="upload-form" class="mb-4">
                             {% csrf_token %}
                             <div class="upload-area mb-4" id="drop-area">
                                 <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                                <h4>Drag & Drop SVS File Here</h4>
-                                <p>or</p>
-                                <input type="file" id="file-input" class="d-none" accept=".svs">
-                                <button type="button" id="browse-btn" class="btn btn-primary">
+                                <h4>Upload an Image File</h4>
+                                <div class="mb-3">
+                                    <label for="file-input" class="form-label">Select an image file:</label>
+                                    <input type="file" id="file-input" accept=".svs,.jpg,.jpeg,.png,.tif,.tiff,image/*" class="form-control">
+                                </div>
+                                <p class="mb-3">Or drag & drop files here</p>
+                                <button type="button" id="browse-btn" class="btn btn-primary d-none">
                                     <i class="fas fa-folder-open me-2"></i> Browse Files
                                 </button>
                             </div>
@@ -123,9 +126,12 @@
                             </div>
 
                             <div class="text-center">
-                                <button type="button" id="analyze-btn" class="btn btn-primary btn-lg" disabled>
-                                    <i class="fas fa-microscope me-2"></i> Analyze SVS Image
+                                <button type="button" id="analyze-btn" class="btn btn-success btn-lg">
+                                    <i class="fas fa-microscope me-2"></i> Analyze Image
                                 </button>
+                                <div class="mt-2 small text-muted">
+                                    <i class="fas fa-info-circle me-1"></i> Select a file first to enable analysis
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -220,6 +226,7 @@
 {% block dashboard_js %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize DOM elements
         const dropArea = document.getElementById('drop-area');
         const fileInput = document.getElementById('file-input');
         const browseBtn = document.getElementById('browse-btn');
@@ -231,6 +238,11 @@
         const loadingSpinner = document.getElementById('loading-spinner');
         const resultContainer = document.getElementById('result-container');
         const newAnalysisBtn = document.getElementById('new-analysis-btn');
+
+        console.log('DOM elements initialized:', {
+            fileInput: fileInput ? 'Found' : 'Not found',
+            browseBtn: browseBtn ? 'Found' : 'Not found'
+        });
 
         // Type descriptions
         const typeDescriptions = {
@@ -250,17 +262,22 @@
 
         let file = null;
 
-        // Handle browse button click
-        browseBtn.addEventListener('click', function() {
+        // Handle browse button click - now we have a visible file input
+        // so this button is just an alternative way to trigger the file input
+        browseBtn.onclick = function() {
+            console.log('Browse button clicked directly');
             fileInput.click();
-        });
+            return false;
+        };
 
         // Handle file selection
         fileInput.addEventListener('change', function() {
             file = this.files[0];
+            console.log('File selected:', file ? file.name : 'No file');
             if (file) {
                 displayFileInfo(file);
-                analyzeBtn.disabled = false;
+                // No need to enable the button as we've removed the disabled attribute
+                // analyzeBtn.disabled = false;
             }
         });
 
@@ -318,7 +335,21 @@
         }
 
         // Handle analyze button click
-        analyzeBtn.addEventListener('click', function() {
+        analyzeBtn.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default button behavior
+            console.log('Analyze button clicked');
+
+            // Get the file from the file input
+            file = fileInput.files[0];
+
+            // Check if a file is selected
+            if (!file) {
+                alert('Please select a file first.');
+                return;
+            }
+
+            console.log('Analyzing file:', file.name);
+
             // Show loading spinner
             uploadContainer.classList.add('d-none');
             loadingSpinner.classList.remove('d-none');
@@ -394,8 +425,7 @@
                 }
             });
             */
-            });
-        });
+    });
 
         // Initialize zoom controls
         function initZoomControls() {
@@ -427,13 +457,21 @@
         }
 
         // Handle new analysis button click
-        newAnalysisBtn.addEventListener('click', function() {
+        newAnalysisBtn.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default button behavior
+            console.log('New analysis button clicked');
+
+            // Reset the form
             resultContainer.classList.add('d-none');
             uploadContainer.classList.remove('d-none');
             fileInput.value = '';
             file = null;
             fileInfoContainer.classList.add('d-none');
-            analyzeBtn.disabled = true;
+            // No need to disable the button as we've removed the disabled attribute
+            // analyzeBtn.disabled = true;
+
+            // Reset the drop area
+            dropArea.classList.remove('dragover');
         });
     });
 </script>

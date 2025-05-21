@@ -13,118 +13,53 @@
 {% block content %}
 <!-- Dashboard Container -->
 <div class="dashboard-container">
-    <!-- Sidebar Toggle Button -->
-    <button class="sidebar-toggle" id="sidebarToggle" data-bs-toggle="tooltip" data-bs-placement="right" title="Show Menu">
-        <i class="fas fa-bars" id="sidebarIcon"></i>
-    </button>
+    <!-- No sidebar toggle button needed as sidebar is always visible -->
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
-            <span>PulmoScan</span>
-        </div>
-
-        <div class="sidebar-user">
-            <img src="https://ui-avatars.com/api/?name={{ request.user.get_full_name|default:request.user.username }}&background=3fbbc0&color=fff" alt="User Profile">
-            <h4>{{ request.user.get_full_name|default:request.user.username }}</h4>
-            <p>{{ request.user.email }}</p>
-        </div>
+        <!-- Sidebar top spacing -->
+        <div class="sidebar-top-space"></div>
 
         <ul class="sidebar-menu">
             <li>
+                <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Home">
+                    <i class="fas fa-home"></i>
+                </a>
+            </li>
+            <li>
                 <a href="{% url 'dashboard' %}" class="{% if request.path == '/dashboard/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
-                    <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                    <i class="fas fa-compass"></i>
                 </a>
             </li>
             <li>
-                <a href="{% url 'dashboardClassification' %}" class="{% if request.path == '/dashboardClassification/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Classification Dashboard">
-                    <i class="fas fa-microscope"></i> <span>Classification Dashboard</span>
+                <a href="{% url 'cancer_stage_dashboard' %}" class="{% if request.path == '/cancer_stage/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Cancer Stage">
+                    <i class="fas fa-lungs"></i>
                 </a>
             </li>
             <li>
-                <a href="{% url 'cancer_stage_dashboard' %}" class="{% if request.path == '/cancer_stage/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Cancer Stage Analysis">
-                    <i class="fas fa-lungs"></i> <span>Cancer Stage</span>
+                <a href="{% url 'cancer_type_dashboard' %}" class="{% if request.path == '/cancer_type/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Cancer Type">
+                    <i class="fas fa-dna"></i>
                 </a>
             </li>
             <li>
-                <a href="{% url 'cancer_type_dashboard' %}" class="{% if request.path == '/cancer_type/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Cancer Type Analysis">
-                    <i class="fas fa-dna"></i> <span>Cancer Type</span>
+                <a href="{% url 'dashboardClassification' %}" class="{% if request.path == '/dashboardClassification/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Cancer Classification">
+                    <i class="fas fa-microscope"></i>
                 </a>
             </li>
             <li>
-                <a href="{% url 'upload' %}" class="{% if request.path == '/upload/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Analyze Image">
-                    <i class="fas fa-upload"></i> <span>Analyze Image</span>
+                <a href="{% url 'upload' %}" class="{% if request.path == '/upload/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Cancer Detection">
+                    <i class="fas fa-upload"></i>
                 </a>
             </li>
+            <li class="sidebar-divider"></li>
             <li>
-                <a href="{% url 'results' %}" class="{% if request.path == '/results/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Results History">
-                    <i class="fas fa-list-alt"></i> <span>Results History</span>
-                </a>
-            </li>
-            <li class="has-submenu">
-                <a href="#" class="submenu-toggle" data-bs-toggle="tooltip" data-bs-placement="right" title="Patient Dashboard">
-                    <i class="fas fa-hospital-user"></i> <span>Patient Dashboard</span>
-                </a>
-                <ul class="submenu">
-                    <li>
-                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="right" title="Patient List">
-                            <i class="fas fa-user-injured"></i> <span>Patient List</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="right" title="Medical Records">
-                            <i class="fas fa-notes-medical"></i> <span>Medical Records</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="has-submenu">
-                <a href="#" class="submenu-toggle" data-bs-toggle="tooltip" data-bs-placement="right" title="Doctor Dashboard">
-                    <i class="fas fa-user-md"></i> <span>Doctor Dashboard</span>
-                </a>
-                <ul class="submenu">
-                    <li>
-                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="right" title="Appointments">
-                            <i class="fas fa-calendar-check"></i> <span>Appointments</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="right" title="Patient Management">
-                            <i class="fas fa-procedures"></i> <span>Patient Management</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="has-submenu">
-                <a href="#" class="submenu-toggle" data-bs-toggle="tooltip" data-bs-placement="right" title="Hospital Dashboard">
-                    <i class="fas fa-hospital"></i> <span>Hospital Dashboard</span>
-                </a>
-                <ul class="submenu">
-                    <li>
-                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="right" title="Bed Management">
-                            <i class="fas fa-bed"></i> <span>Bed Management</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="right" title="Pharmacy">
-                            <i class="fas fa-pills"></i> <span>Pharmacy</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="{% url 'profile' %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Profile Settings">
-                    <i class="fas fa-user-cog"></i> <span>Profile Settings</span>
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'home' %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Back to Home">
-                    <i class="fas fa-home"></i> <span>Back to Home</span>
+                <a href="{% url 'profile' %}" class="{% if request.path == '/profile/' %}active{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Profile Settings">
+                    <i class="fas fa-user"></i>
                 </a>
             </li>
             <li>
                 <a href="{% url 'logout' %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
-                    <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+                    <i class="fas fa-sign-out-alt"></i>
                 </a>
             </li>
         </ul>
@@ -173,215 +108,32 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize tooltips
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl, {
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl, {
                 trigger: 'hover',
                 container: 'body'
             });
         });
 
-        // Sidebar Toggle
-        const sidebarToggle = document.getElementById('sidebarToggle');
+        // Handle mobile view
         const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-        const body = document.body;
-
-        // Get sidebar icon element
-        const sidebarIcon = document.getElementById('sidebarIcon');
-
-        // By default, sidebar is hidden and icon shows menu bars
-        if (sidebarIcon) {
-            sidebarIcon.classList.remove('fa-chevron-right');
-            sidebarIcon.classList.add('fa-bars');
-        }
-
-        // Check if sidebar visibility state is stored in localStorage
-        const sidebarVisible = localStorage.getItem('sidebarVisible') === 'true';
-        const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-
-        // Apply saved state on page load
-        if (sidebarVisible) {
-            sidebar.classList.add('active');
-
-            if (sidebarCollapsed) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('sidebar-collapsed');
-                body.classList.add('sidebar-collapsed');
-
-                if (sidebarIcon) {
-                    sidebarIcon.classList.remove('fa-bars');
-                    sidebarIcon.classList.add('fa-chevron-right');
-                }
-            } else {
-                mainContent.classList.add('sidebar-visible');
-                body.classList.add('sidebar-visible');
-
-                if (sidebarIcon) {
-                    sidebarIcon.classList.remove('fa-bars');
-                    sidebarIcon.classList.add('fa-times');
-                }
-            }
-        }
-
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', function() {
-                const isActive = sidebar.classList.contains('active');
-                const isCollapsed = sidebar.classList.contains('collapsed');
-
-                // If sidebar is not visible, show it
-                if (!isActive) {
-                    sidebar.classList.add('active');
-
-                    if (isCollapsed) {
-                        mainContent.classList.add('sidebar-collapsed');
-                        body.classList.add('sidebar-collapsed');
-                    } else {
-                        mainContent.classList.add('sidebar-visible');
-                        body.classList.add('sidebar-visible');
-                    }
-
-                    // Update icon to close/collapse
-                    if (sidebarIcon) {
-                        sidebarIcon.classList.remove('fa-bars');
-                        sidebarIcon.classList.add(isCollapsed ? 'fa-chevron-right' : 'fa-times');
-                    }
-
-                    // Save state
-                    localStorage.setItem('sidebarVisible', 'true');
-                }
-                // If sidebar is visible and not collapsed, collapse it
-                else if (isActive && !isCollapsed) {
-                    sidebar.classList.add('collapsed');
-                    mainContent.classList.remove('sidebar-visible');
-                    mainContent.classList.add('sidebar-collapsed');
-                    body.classList.remove('sidebar-visible');
-                    body.classList.add('sidebar-collapsed');
-
-                    // Update icon
-                    if (sidebarIcon) {
-                        sidebarIcon.classList.remove('fa-times');
-                        sidebarIcon.classList.add('fa-chevron-right');
-                    }
-
-                    // Save state
-                    localStorage.setItem('sidebarCollapsed', 'true');
-                }
-                // If sidebar is visible and collapsed, expand it
-                else if (isActive && isCollapsed) {
-                    sidebar.classList.remove('collapsed');
-                    mainContent.classList.remove('sidebar-collapsed');
-                    mainContent.classList.add('sidebar-visible');
-                    body.classList.remove('sidebar-collapsed');
-                    body.classList.add('sidebar-visible');
-
-                    // Update icon
-                    if (sidebarIcon) {
-                        sidebarIcon.classList.remove('fa-chevron-right');
-                        sidebarIcon.classList.add('fa-times');
-                    }
-
-                    // Save state
-                    localStorage.setItem('sidebarCollapsed', 'false');
-                }
-
-                // Update tooltip title based on sidebar state
-                let tooltipTitle = "Show Menu";
-
-                if (sidebar.classList.contains('active')) {
-                    if (sidebar.classList.contains('collapsed')) {
-                        tooltipTitle = "Expand Menu";
-                    } else {
-                        tooltipTitle = "Collapse Menu";
-                    }
-                }
-
-                // Destroy and reinitialize tooltip on the toggle button
-                const toggleTooltip = bootstrap.Tooltip.getInstance(sidebarToggle);
-                if (toggleTooltip) {
-                    toggleTooltip.dispose();
-                }
-
-                // Set new title attribute
-                sidebarToggle.setAttribute('title', tooltipTitle);
-
-                // Create new tooltip
-                new bootstrap.Tooltip(sidebarToggle, {
-                    trigger: 'hover',
-                    container: 'body'
-                });
-            });
-        }
-
-        // Submenu Toggle
-        const submenuToggles = document.querySelectorAll('.submenu-toggle');
-
-        submenuToggles.forEach(toggle => {
-            toggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                const parent = this.parentElement;
-
-                // Close other open submenus
-                const openMenus = document.querySelectorAll('.sidebar-menu .has-submenu.open');
-                openMenus.forEach(menu => {
-                    if (menu !== parent) {
-                        menu.classList.remove('open');
-                        menu.querySelector('.submenu').classList.remove('show');
-                    }
-                });
-
-                // Toggle current submenu
-                parent.classList.toggle('open');
-                const submenu = parent.querySelector('.submenu');
-                submenu.classList.toggle('show');
-            });
-        });
-
-        // Close sidebar when clicking outside
-        document.addEventListener('click', function(e) {
-            // Check if sidebar is visible
-            if (sidebar.classList.contains('active')) {
-                // Check if click is outside sidebar and sidebar toggle button
-                if (!sidebar.contains(e.target) && e.target !== sidebarToggle && !sidebarToggle.contains(e.target)) {
-                    // Hide sidebar
-                    sidebar.classList.remove('active');
-                    mainContent.classList.remove('sidebar-visible', 'sidebar-collapsed');
-                    body.classList.remove('sidebar-visible', 'sidebar-collapsed');
-
-                    // Reset icon
-                    if (sidebarIcon) {
-                        sidebarIcon.classList.remove('fa-times', 'fa-chevron-right');
-                        sidebarIcon.classList.add('fa-bars');
-                    }
-
-                    // Save state
-                    localStorage.setItem('sidebarVisible', 'false');
-
-                    // Update tooltip
-                    const toggleTooltip = bootstrap.Tooltip.getInstance(sidebarToggle);
-                    if (toggleTooltip) {
-                        toggleTooltip.dispose();
-                    }
-                    sidebarToggle.setAttribute('title', 'Show Menu');
-                    new bootstrap.Tooltip(sidebarToggle, {
-                        trigger: 'hover',
-                        container: 'body'
-                    });
-                }
-            }
-        });
 
         // Handle window resize
         window.addEventListener('resize', function() {
             const windowWidth = window.innerWidth;
 
             // On mobile, adjust sidebar behavior
-            if (windowWidth < 992) {
-                // If sidebar is visible on mobile, make sure it floats over content
-                if (sidebar.classList.contains('active')) {
-                    mainContent.classList.remove('sidebar-visible', 'sidebar-collapsed');
-                }
+            if (windowWidth < 768) {
+                // Add mobile class to sidebar
+                sidebar.classList.add('sidebar-mobile');
+            } else {
+                // Remove mobile class from sidebar
+                sidebar.classList.remove('sidebar-mobile');
             }
         });
+
+        // Trigger resize event on load
+        window.dispatchEvent(new Event('resize'));
     });
 </script>
 

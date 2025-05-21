@@ -14,181 +14,77 @@
 }
 
 .sidebar {
-  width: 280px;
+  width: 60px;
   background-color: #fff;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
   position: fixed;
-  top: 0;
-  left: -280px; /* Start with sidebar hidden */
-  height: 100vh;
+  top: 120px; /* Position after navbar */
+  left: 20px;
+  height: calc(100vh - 140px);
   z-index: 1000;
-  transition: all 0.3s ease;
-  overflow-y: auto;
-}
-
-/* Active sidebar (visible) */
-.sidebar.active {
-  left: 0;
-}
-
-/* Collapsed sidebar */
-.sidebar.collapsed {
-  width: 70px;
-  overflow-x: hidden;
-  left: -70px; /* Hidden when collapsed */
-}
-
-/* Collapsed and active */
-.sidebar.collapsed.active {
-  left: 0;
-}
-
-.sidebar-brand span,
-.sidebar-user h4,
-.sidebar-user p,
-.sidebar-menu a span,
-.sidebar-menu .submenu,
-.sidebar-menu a:after {
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.sidebar.collapsed .sidebar-brand span,
-.sidebar.collapsed .sidebar-user h4,
-.sidebar.collapsed .sidebar-user p,
-.sidebar.collapsed .sidebar-menu a span,
-.sidebar.collapsed .sidebar-menu .submenu,
-.sidebar.collapsed .sidebar-menu a:after {
-  opacity: 0;
-  visibility: hidden;
-  display: none;
-}
-
-.sidebar.collapsed .sidebar-brand {
-  justify-content: center;
-  padding: 20px 10px;
-}
-
-.sidebar.collapsed .sidebar-user {
-  padding: 10px;
-}
-
-.sidebar.collapsed .sidebar-user img {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 0;
-}
-
-.sidebar.collapsed .sidebar-menu a {
-  padding: 15px 0;
-  text-align: center;
-}
-
-.sidebar.collapsed .sidebar-menu a i {
-  margin-right: 0;
-  font-size: 20px;
-}
-
-.sidebar-brand {
-  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 15px;
+  transition: all 0.3s ease;
 }
 
-.sidebar-brand span {
-  font-size: 20px;
-  font-weight: 600;
-  color: #3fbbc0;
-}
-
-.sidebar-user {
-  padding: 20px;
-  text-align: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.sidebar-user img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-.sidebar-user h4 {
-  margin-bottom: 5px;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.sidebar-user p {
-  font-size: 14px;
-  color: #6c757d;
-  margin-bottom: 0;
+/* Sidebar top spacing */
+.sidebar-top-space {
+  height: 20px;
+  width: 100%;
 }
 
 .sidebar-menu {
-  padding: 20px 0;
+  padding: 0;
   list-style: none;
   margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sidebar-menu li {
-  margin-bottom: 5px;
-}
-
-.sidebar-menu a {
-  display: block;
-  padding: 10px 20px;
-  color: #333;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  font-size: 15px;
-}
-
-.sidebar-menu a i {
-  margin-right: 10px;
-  width: 20px;
+  margin-bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   text-align: center;
 }
 
-.sidebar-menu a:hover, .sidebar-menu a.active {
-  background-color: rgba(63, 187, 192, 0.1);
-  color: #3fbbc0;
+.sidebar-menu a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: #8a94a6;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 18px;
+  margin: 0 auto;
+}
+
+.sidebar-menu a:hover {
+  color: #2196f3;
 }
 
 .sidebar-menu a.active {
-  border-left: 4px solid #3fbbc0;
+  color: #2196f3;
 }
 
-.sidebar-menu .has-submenu .submenu {
-  padding-left: 20px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-
-.sidebar-menu .has-submenu.open .submenu {
-  max-height: 500px;
-}
-
-.sidebar-menu .submenu li a {
-  padding: 8px 20px;
-  font-size: 14px;
+.sidebar-divider {
+  height: 1px;
+  width: 30px;
+  background-color: #f0f2f5;
+  margin: 15px 0;
 }
 
 .main-content {
   flex: 1;
-  margin-left: 0; /* Start with full width */
+  margin-left: 100px; /* Account for floating sidebar */
   transition: all 0.3s ease;
-}
-
-.main-content.sidebar-visible {
-  margin-left: 280px;
-}
-
-.main-content.sidebar-collapsed {
-  margin-left: 70px;
 }
 
 .top-navbar {
@@ -227,78 +123,33 @@
   padding: 0 20px 40px;
 }
 
-/* Sidebar Toggle Button */
-.sidebar-toggle {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1001;
-  background-color: #3fbbc0;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  width: 45px;
-  height: 45px;
-  font-size: 20px;
-  cursor: pointer;
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
+/* No sidebar toggle button needed */
 
-.sidebar-toggle:hover {
-  background-color: #2da8ad;
-  transform: scale(1.05);
-}
-
-/* When sidebar is visible */
-.sidebar-visible .sidebar-toggle {
-  left: 300px;
-}
-
-/* When sidebar is visible but collapsed */
-.sidebar-collapsed .sidebar-toggle {
-  left: 85px;
+/* Mobile Sidebar */
+.sidebar-mobile {
+  width: 50px;
 }
 
 /* Responsive Adjustments */
-@media (max-width: 992px) {
-  /* Sidebar is already hidden by default */
-
-  /* When sidebar is visible */
-  .sidebar-visible .sidebar-toggle {
-    left: 20px; /* Keep toggle button in the same place on mobile */
+@media (max-width: 768px) {
+  /* Adjust main content margin for mobile */
+  .main-content {
+    margin-left: 80px;
   }
 
-  /* When sidebar is visible but collapsed */
-  .sidebar-collapsed .sidebar-toggle {
-    left: 20px;
+  /* Make sidebar narrower on mobile */
+  .sidebar {
+    width: 50px;
+    left: 15px;
+    top: 100px; /* Adjust for mobile navbar */
+    height: calc(100vh - 120px);
   }
 
-  /* Main content always takes full width on mobile */
-  .main-content.sidebar-visible,
-  .main-content.sidebar-collapsed {
-    margin-left: 0;
-  }
-
-  /* Overlay when sidebar is open on mobile */
-  .sidebar.active:before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    pointer-events: none;
-  }
-
-  /* Make sidebar float over content on mobile */
-  .sidebar.active {
-    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+  /* Smaller icons on mobile */
+  .sidebar-menu a {
+    font-size: 16px;
+    width: 36px;
+    height: 36px;
   }
 }
 

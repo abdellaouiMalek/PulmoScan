@@ -28,6 +28,7 @@
 
   <!-- Main CSS File -->
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
+  <link href="{% static 'css/chatbot.css' %}" rel="stylesheet">
 
   {% block extra_css %}{% endblock %}
 </head>
@@ -51,7 +52,6 @@
 
       <div class="container position-relative d-flex align-items-center justify-content-end">
         <a href="{% url 'home' %}" class="logo d-flex align-items-center me-auto">
-          <img src="{% static 'img/logo.png' %}" alt="">
           <h1 class="sitename">PulmoScan</h1>
         </a>
 
@@ -60,7 +60,7 @@
             <li><a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
             <li><a href="{% url 'about' %}" class="{% if request.path == '/about/' %}active{% endif %}">About</a></li>
             <li><a href="{% url 'services' %}" class="{% if request.path == '/services/' %}active{% endif %}">Services</a></li>
-            <li><a href="{% url 'doctors' %}" class="{% if request.path == '/doctors/' %}active{% endif %}">Doctors</a></li>
+            <li><a href="{% url 'doctors' %}" class="{% if request.path == '/doctors/' %}active{% endif %}">Team</a></li>
             <li><a href="{% url 'contact' %}" class="{% if request.path == '/contact/' %}active{% endif %}">Contact</a></li>
             {% if user.is_authenticated %}
             <li class="dropdown">
@@ -79,7 +79,7 @@
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
 
-        <a class="cta-btn" href="{% url 'appointment' %}">Make an Appointment</a>
+        <a class="cta-btn" href="{% url 'appointment' %}">Request an Estimate</a>
 
       </div>
 
@@ -99,7 +99,7 @@
         <div class="row gy-4">
           <div class="col-lg-5 col-md-12 footer-info">
             <a href="{% url 'home' %}" class="logo d-flex align-items-center">
-              <img src="{% static 'img/logo.png' %}" alt="">
+              <img src="{% static 'medical/img/logo.png' %}" alt="PulmoScan Logo">
               <span>PulmoScan</span>
             </a>
             <p>Advanced lung cancer detection and classification system using state-of-the-art AI technology.</p>
@@ -136,9 +136,9 @@
           <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
             <h4>Contact Us</h4>
             <p>
-              Rue <br>
-              New York, NY 535022<br>
-              United States <br><br>
+              Technopark <br>
+              El Ghazela<br>
+              Tunisia <br><br>
               <strong>Phone:</strong> +216 70 000 000<br>
               <strong>Email:</strong> info@pulmoscan.com<br>
             </p>
@@ -156,6 +156,29 @@
 
   <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+  <!-- Chatbot -->
+  <div class="chatbot-button" id="chatbot-button">
+    <i class="bi bi-chat-dots-fill"></i>
+    <span class="notification-badge" id="chatbot-notification" style="display: none;">1</span>
+  </div>
+
+  <div class="chatbot-container" id="chatbot-container">
+    <div class="chatbot-header">
+      <div>
+        <h3><i class="bi bi-robot"></i> PulmoBot</h3>
+        <div class="status">Online</div>
+      </div>
+      <div class="chatbot-close" id="chatbot-close"><i class="bi bi-x-lg"></i></div>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages">
+      <!-- Messages will be added here dynamically -->
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="chatbot-input" placeholder="Type your message..." aria-label="Type your message">
+      <button id="chatbot-send" aria-label="Send message"><i class="bi bi-send-fill"></i></button>
+    </div>
+  </div>
+
   <!-- Vendor JS Files -->
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor/aos/aos.js' %}"></script>
@@ -166,6 +189,7 @@
 
   <!-- Main JS File -->
   <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/chatbot.js' %}"></script>
 
   <!-- Initialize AOS -->
   <script>
