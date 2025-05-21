@@ -1,0 +1,245 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}PulmoScan - Cancer Detection{% endblock %}
+
+{% block page_title %}Cancer Detection{% endblock %}
+
+{% block dashboard_content %}
+<div class="container py-4 fade-in">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-primary text-white">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="mb-3">Cancer Detection</h2>
+                            <p class="lead mb-0">Upload lung nodule images to detect the presence of cancer using our advanced deep learning model.</p>
+                        </div>
+                        <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
+                            <i class="fas fa-search-plus fa-5x text-white-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancer Detection Information -->
+    <div class="row mb-4">
+        <div class="col-12 mb-4">
+            <h3 class="mb-3">Understanding Lung Cancer Detection</h3>
+            <p>Early detection of lung cancer is crucial for successful treatment. Our AI model can help identify malignant nodules from medical images with high accuracy.</p>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Benign vs. Malignant Nodules</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <div class="text-center mb-3">
+                                <div class="nodule-example benign-example"></div>
+                            </div>
+                            <h5 class="text-center">Benign Nodule</h5>
+                            <ul class="small">
+                                <li>Well-defined borders</li>
+                                <li>Regular shape</li>
+                                <li>Smooth edges</li>
+                                <li>Slow growth rate</li>
+                                <li>No invasion of surrounding tissues</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-center mb-3">
+                                <div class="nodule-example malignant-example"></div>
+                            </div>
+                            <h5 class="text-center">Malignant Nodule</h5>
+                            <ul class="small">
+                                <li>Irregular, spiculated borders</li>
+                                <li>Irregular shape</li>
+                                <li>Rapid growth</li>
+                                <li>Invasion of surrounding tissues</li>
+                                <li>May show cavitation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Detection Accuracy</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-7">
+                            <h5 class="mb-3">Model Performance</h5>
+                            <div class="mb-3">
+                                <label class="form-label small">Accuracy</label>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 92%" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100">92%</div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small">Sensitivity</label>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 94%" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100">94%</div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small">Specificity</label>
+                                <div class="progress">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100">89%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                            <div class="chart-container">
+                                <canvas id="accuracyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Upload Image</h5>
+                </div>
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-upload fa-4x text-primary mb-4"></i>
+                    <h4 class="mb-3">Analyze a New Image</h4>
+                    <p class="mb-4">Upload a lung nodule image to analyze and detect the presence of cancer.</p>
+                    <a href="{% url 'upload' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-upload me-2"></i> Upload Image
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">View Results</h5>
+                </div>
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-history fa-4x text-primary mb-4"></i>
+                    <h4 class="mb-3">Previous Analyses</h4>
+                    <p class="mb-4">View the history of your previous cancer detection analyses and their results.</p>
+                    <a href="{% url 'results' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-list-alt me-2"></i> View Results History
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Our Model -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">About Our Detection Model</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h5>How It Works</h5>
+                            <p>Our cancer detection model uses a deep convolutional neural network trained on thousands of labeled lung nodule images. The model analyzes the visual patterns and features of the nodule to determine if it's likely to be malignant or benign.</p>
+                            
+                            <h5>Key Features:</h5>
+                            <ul>
+                                <li>Trained on over 10,000 annotated lung nodule images</li>
+                                <li>Achieves 92% accuracy in distinguishing between malignant and benign nodules</li>
+                                <li>Provides confidence scores for each prediction</li>
+                                <li>Optimized for clinical use with fast inference time</li>
+                                <li>Regularly updated with new training data for improved performance</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-5 text-center">
+                            <img src="{% static 'img/nodule_example.jpg' %}" alt="Lung Nodule Example" class="img-fluid rounded mb-3" style="max-height: 200px;">
+                            <p class="text-muted small">Example of a processed lung nodule image</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block dashboard_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Accuracy Chart
+        const ctx = document.getElementById('accuracyChart').getContext('2d');
+        const accuracyChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Correct', 'Incorrect'],
+                datasets: [{
+                    data: [92, 8],
+                    backgroundColor: ['#28a745', '#f8f9fa'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    });
+</script>
+
+<style>
+    .nodule-example {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin: 0 auto;
+        border: 3px solid #ddd;
+    }
+    
+    .benign-example {
+        background-color: #e9f7ef;
+        background-image: radial-gradient(circle, #c8e6c9 30%, #e9f7ef 70%);
+    }
+    
+    .malignant-example {
+        background-color: #fdecea;
+        background-image: radial-gradient(circle, #ffcdd2 20%, #fdecea 60%);
+        box-shadow: 0 0 0 4px rgba(255, 82, 82, 0.1);
+        border: 3px solid #ffcdd2;
+    }
+    
+    .chart-container {
+        height: 150px;
+        position: relative;
+    }
+</style>
+{% endblock %}

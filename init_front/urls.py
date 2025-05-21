@@ -25,6 +25,7 @@ urlpatterns = [
     path("api/", include("api.urls")),
     path("cancer_stage/", include("cancer_stage.urls")),
     path("cancer_type/", include("cancer_type.urls")),
+    path("cancer_detection/", include("cancer_detection.urls")),
 ]
 
 # Serve static and media files in development
