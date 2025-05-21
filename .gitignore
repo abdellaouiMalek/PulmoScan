@@ -59,6 +59,9 @@ examp/
 venv/
 .venv/
 env/
+newenv/
+.venv/
+gpu_env/
 
 # Ignore certain file types
 *.pdf
@@ -108,3 +111,9 @@ cancer_type/balanced_images/
 cancer_type/processed_images/
 
 PulmoScan/
+# Ignore the output folder
+Models/
+
+gpu-requirements/
+
+Models/MedicalNet/
