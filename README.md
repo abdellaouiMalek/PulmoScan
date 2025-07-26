@@ -55,6 +55,20 @@ git clone https://github.com/your-username/PulmoScan.git
 pip install -r requirements.txt
 ```
 ---
+## 🧑‍💻 Author
+
+**Guenichi Ibrahim**  
+[LinkedIn](https://www.linkedin.com/in/ibrahim-guenichi-b38a77217/) 
+**Abdellaoui Malek**  
+[LinkedIn](www.linkedin.com/in/malek-abdellaoui) 
+**Bettaieb Ahmed**  
+[LinkedIn]([https://www.linkedin.com/](https://www.linkedin.com/in/ahmed-bettaieb-a45285348/)) 
+**Ben Mohamed Malak**  
+[LinkedIn]([https://www.linkedin.com/](https://www.linkedin.com/in/malak-ben-mohamed-238663348/)) 
+**Kacem Skander**  
+[LinkedIn]([https://www.linkedin.com/](https://www.linkedin.com/in/skander-kacem-45639a348/)) 
+**Derouich Samira**  
+[LinkedIn]([https://www.linkedin.com/](https://www.linkedin.com/in/derouich-samira-96095023b/)) 
 
 **Disclaimer**: This project is intended as a research tool and should not replace professional medical diagnoses. Always consult healthcare professionals for accurate diagnoses.
 
